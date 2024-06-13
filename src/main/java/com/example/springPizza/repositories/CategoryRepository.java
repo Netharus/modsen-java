@@ -1,4 +1,4 @@
-package com.example.springPizza.database.models.repositories;
+package com.example.springPizza.repositories;
 
 import com.example.springPizza.database.models.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
