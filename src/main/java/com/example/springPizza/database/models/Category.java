@@ -21,7 +21,7 @@ public class Category {
     @Column(length = 40, nullable = false)
     private String name;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
-    private List<Product> products = new ArrayList<>();
+//    @Builder.Default
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
+//    private List<Product> products = new ArrayList<>();
 }
