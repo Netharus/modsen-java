@@ -2,15 +2,9 @@ package com.example.springPizza.database.models;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter
-@Setter
-@Builder
+@Data
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -20,8 +14,4 @@ public class Category {
 
     @Column(length = 40, nullable = false)
     private String name;
-
-//    @Builder.Default
-//    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
-//    private List<Product> products = new ArrayList<>();
 }
