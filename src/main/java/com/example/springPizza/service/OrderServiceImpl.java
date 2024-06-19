@@ -4,6 +4,7 @@ import com.example.springPizza.database.models.Order;
 import com.example.springPizza.repositories.OrderRepository;
 import com.example.springPizza.database.models.dto.OrderDTO;
 import com.example.springPizza.service.interfaces.OrderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 @Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
-
-    @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository){
-        this.orderRepository = orderRepository;
-    }
 
     @Override
     public List<OrderDTO> getAllOrders() {
@@ -57,9 +54,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void deleteOrder(Long id) {
-        if(orderRepository.existsById(id)){
+        if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);
-        }else{
+        } else {
             log.info("Tried delete not existing category");
         }
     }

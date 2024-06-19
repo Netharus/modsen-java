@@ -4,6 +4,7 @@ import com.example.springPizza.database.models.Product;
 import com.example.springPizza.database.models.dto.ProductDTO;
 import com.example.springPizza.repositories.ProductRepository;
 import com.example.springPizza.service.interfaces.ProductService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,17 +14,13 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
-
-    @Autowired
-    public ProductServiceImpl(ProductRepository productRepository){
-        this.productRepository = productRepository;
-    }
 
     @Override
     @Transactional
@@ -43,9 +40,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     @Transactional
     public void deleteProduct(Long id) {
-        if(productRepository.existsById(id)){
+        if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
-        }else{
+        } else {
             log.info("Tried delete not existing product");
         }
     }
@@ -56,7 +53,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> getProductByName(String name){
+    public List<ProductDTO> getProductByName(String name) {
         return productRepository.findAllByName(name).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
@@ -84,6 +81,7 @@ public class ProductServiceImpl implements ProductService {
         productDTO.setCategoryId(Long.valueOf(product.getCategoryId()));
         return productDTO;
     }
+
     private Product convertFromDTO(ProductDTO productDTO) {
         Product product = new Product();
         product.setId(productDTO.getId());

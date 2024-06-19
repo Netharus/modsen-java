@@ -4,6 +4,7 @@ import com.example.springPizza.database.models.Category;
 import com.example.springPizza.repositories.CategoryRepository;
 import com.example.springPizza.database.models.dto.CategoryDTO;
 import com.example.springPizza.service.interfaces.CategoryService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,17 +13,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
 @Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
-
-    @Autowired
-    public CategoryServiceImpl(CategoryRepository categoryRepository){
-        this.categoryRepository = categoryRepository;
-    }
 
     @Transactional
     @Override
@@ -44,9 +41,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     @Transactional
     public void deleteCategory(Long id) {
-        if(categoryRepository.existsById(id)){
+        if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
-        }else{
+        } else {
             log.info("Tried delete not existing category");
         }
 
