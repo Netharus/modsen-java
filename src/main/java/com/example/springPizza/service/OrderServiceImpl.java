@@ -3,20 +3,21 @@ package com.example.springPizza.service;
 import com.example.springPizza.database.models.Order;
 import com.example.springPizza.repositories.OrderRepository;
 import com.example.springPizza.database.models.dto.OrderDTO;
-import jakarta.transaction.Transactional;
+import com.example.springPizza.service.interfaces.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class OrderServiceImpl implements OrderService {
 
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository){
@@ -39,12 +40,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public Order createOrder(OrderDTO orderDTO) {
         Order order = convertFromDTO(orderDTO);
         return orderRepository.save(order);
     }
 
     @Override
+    @Transactional
     public Order updateOrder(Long id, OrderDTO orderDTO) throws Exception {
         orderRepository.findById(id).orElseThrow(() -> new Exception("Order not found"));
         Order order = convertFromDTO(orderDTO);
@@ -52,6 +55,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public void deleteOrder(Long id) {
         if(orderRepository.existsById(id)){
             orderRepository.deleteById(id);

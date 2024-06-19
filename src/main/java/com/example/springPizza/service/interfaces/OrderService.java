@@ -1,4 +1,4 @@
-package com.example.springPizza.service;
+package com.example.springPizza.service.interfaces;
 
 import com.example.springPizza.database.models.Order;
 import com.example.springPizza.database.models.dto.OrderDTO;

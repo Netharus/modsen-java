@@ -2,9 +2,11 @@ package com.example.springPizza.database.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "categories")
 public class Category {

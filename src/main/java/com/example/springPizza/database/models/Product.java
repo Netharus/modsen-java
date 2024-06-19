@@ -6,7 +6,11 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Data
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "products")
 public class Product {

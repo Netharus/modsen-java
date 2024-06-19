@@ -3,21 +3,22 @@ package com.example.springPizza.service;
 import com.example.springPizza.database.models.Product;
 import com.example.springPizza.database.models.dto.ProductDTO;
 import com.example.springPizza.repositories.ProductRepository;
-import jakarta.transaction.Transactional;
+import com.example.springPizza.service.interfaces.ProductService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
-    private ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
     @Autowired
     public ProductServiceImpl(ProductRepository productRepository){
@@ -25,12 +26,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public Product createProduct(ProductDTO productDTO) {
         Product product = convertFromDTO(productDTO);
         return productRepository.save(product);
     }
 
     @Override
+    @Transactional
     public Product updateProduct(Long id, ProductDTO productDTO) throws Exception {
         productRepository.findById(id).orElseThrow(() -> new Exception("Product not found"));
         Product product = convertFromDTO(productDTO);
@@ -38,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteProduct(Long id) {
         if(productRepository.existsById(id)){
             productRepository.deleteById(id);

@@ -4,20 +4,22 @@ import com.example.springPizza.database.models.User;
 import com.example.springPizza.database.models.dto.UserDTO;
 import com.example.springPizza.database.models.enums.Role;
 import com.example.springPizza.repositories.UserRepository;
-import jakarta.transaction.Transactional;
+
+import com.example.springPizza.service.interfaces.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository){
@@ -45,12 +47,14 @@ public class UserServiceImpl implements UserService{
         return convertToDTO(userRepository.findById(id).orElseThrow(() -> new Exception("User not found")));
     }
 
+    @Transactional
     @Override
     public User createUser(UserDTO userDTO) {
         User user = convertFromDTO(userDTO);
         return userRepository.save(user);
     }
 
+    @Transactional
     @Override
     public User updateUser(Long id, UserDTO userDTO) throws Exception {
         userRepository.findById(id).orElseThrow(() -> new Exception("User not found"));
@@ -58,6 +62,7 @@ public class UserServiceImpl implements UserService{
         return userRepository.saveAndFlush(user);
     }
 
+    @Transactional
     @Override
     public void deleteUser(Long id) {
         if (userRepository.existsById(id)) {

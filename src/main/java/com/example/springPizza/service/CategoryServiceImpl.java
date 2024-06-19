@@ -3,34 +3,38 @@ package com.example.springPizza.service;
 import com.example.springPizza.database.models.Category;
 import com.example.springPizza.repositories.CategoryRepository;
 import com.example.springPizza.database.models.dto.CategoryDTO;
-import jakarta.transaction.Transactional;
+import com.example.springPizza.service.interfaces.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(readOnly = true)
 @Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
     public CategoryServiceImpl(CategoryRepository categoryRepository){
         this.categoryRepository = categoryRepository;
     }
 
+    @Transactional
     @Override
     public Category createCategory(CategoryDTO categoryDTO) {
         Category category = convertFromDTO(categoryDTO);
         return categoryRepository.save(category);
     }
 
+
     //TODO: custom errors
     @Override
+    @Transactional
     public Category updateCategory(Long id, CategoryDTO categoryDTO) throws Exception {
         categoryRepository.findById(id).orElseThrow(() -> new Exception("Product not found"));
         Category category = convertFromDTO(categoryDTO);
@@ -38,6 +42,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public void deleteCategory(Long id) {
         if(categoryRepository.existsById(id)){
             categoryRepository.deleteById(id);
