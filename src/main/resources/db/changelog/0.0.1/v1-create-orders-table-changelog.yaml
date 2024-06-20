@@ -19,3 +19,6 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: user_id_fk
                     references: users(id)
+        rollback:
+          - dropTable:
+              tableName: orders

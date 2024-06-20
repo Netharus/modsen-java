@@ -40,3 +40,6 @@ databaseChangeLog:
                   type: varchar(30)
                   constraints:
                     nullable: false
+      rollback:
+        - dropTable:
+            tableName: users

@@ -17,3 +17,6 @@ databaseChangeLog:
                   type: varchar(40)
                   constraints:
                     nullable: false
+      rollback:
+        - dropTable:
+            tableName: categories

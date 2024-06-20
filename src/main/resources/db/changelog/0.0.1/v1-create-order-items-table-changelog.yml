@@ -20,3 +20,6 @@ databaseChangeLog:
                            nullable: false
                            foreignKeyName: product_id_fk
                            references: products(id)
+      rollback:
+        - dropTable:
+            tableName: order_items

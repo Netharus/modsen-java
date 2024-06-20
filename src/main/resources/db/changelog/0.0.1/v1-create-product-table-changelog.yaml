@@ -34,3 +34,6 @@ databaseChangeLog:
               - column:
                   name: photo
                   type: varchar(255)
+      rollback:
+        - dropTable:
+            tableName: products
