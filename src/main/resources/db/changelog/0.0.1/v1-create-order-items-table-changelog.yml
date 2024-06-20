@@ -23,3 +23,16 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: order_items
+  - changeSet:
+      id: v1-5-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - tableExists:
+            tableName: order_items
+        - onFail: MARK_RAN
+        - tableIsEmpty:
+            tableName: order_items
+        changes:
+          - loadData:
+              file: db/data/order_items.json
+              tableName: order_items

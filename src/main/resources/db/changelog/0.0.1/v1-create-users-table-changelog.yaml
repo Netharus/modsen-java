@@ -43,3 +43,16 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: users
+  - changeSet:
+      id: v1-3-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - tableExists:
+            tableName: users
+        - onFail: MARK_RAN
+        - tableIsEmpty:
+            tableName: users
+        changes:
+          - loadData:
+              file: db/data/users.json
+              tableName: users

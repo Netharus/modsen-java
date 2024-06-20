@@ -4,7 +4,7 @@ databaseChangeLog:
       author: Mikhail Kondratsiuk
       changes:
         - createTable:
-            tableName: categories
+            tableName: v
             columns:
               - column:
                   name: id
@@ -20,3 +20,16 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: categories
+  - changeSet:
+      id: v1-1-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - tableExists:
+            tableName: categories
+        - onFail: MARK_RAN
+        - tableIsEmpty:
+            tableName: categories
+        changes:
+          - loadData:
+              file: db/data/categories.json
+              tableName: categories

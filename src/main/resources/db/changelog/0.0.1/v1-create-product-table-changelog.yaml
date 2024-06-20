@@ -37,3 +37,16 @@ databaseChangeLog:
       rollback:
         - dropTable:
             tableName: products
+  - changeSet:
+      id: v1-2-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - tableExists:
+            tableName: products
+        - onFail: MARK_RAN
+        - tableIsEmpty:
+            tableName: products
+        changes:
+          - loadData:
+              file: db/data/products.json
+              tableName: products
