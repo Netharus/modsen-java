@@ -1,14 +1,12 @@
-package com.example.springPizza.service;
+package com.example.springPizza.services;
 
 import com.example.springPizza.database.models.User;
-import com.example.springPizza.database.models.dto.UserDTO;
+import com.example.springPizza.mappers.dtos.UserDTO;
 import com.example.springPizza.database.models.enums.Role;
 import com.example.springPizza.repositories.UserRepository;
-
-import com.example.springPizza.service.interfaces.UserService;
+import com.example.springPizza.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,41 +15,41 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
 @Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public UserDTO getUserByUsername(String username) throws Exception {
         return convertToDTO(userRepository.findByUsername(username).orElseThrow(() -> new Exception("User not found")));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDTO getUserByLogin(String login) throws Exception {
         return convertToDTO(userRepository.findByLogin(login).orElseThrow(() -> new Exception("User not found")));
     }
 
-
+    @Transactional(readOnly = true)
     @Override
     public List<UserDTO> getAllUsers() {
         return userRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public UserDTO getUserById(Long id) throws Exception {
         return convertToDTO(userRepository.findById(id).orElseThrow(() -> new Exception("User not found")));
     }
 
-    @Transactional
     @Override
     public User createUser(UserDTO userDTO) {
         User user = convertFromDTO(userDTO);
         return userRepository.save(user);
     }
 
-    @Transactional
     @Override
     public User updateUser(Long id, UserDTO userDTO) throws Exception {
         userRepository.findById(id).orElseThrow(() -> new Exception("User not found"));
@@ -59,7 +57,6 @@ public class UserServiceImpl implements UserService {
         return userRepository.saveAndFlush(user);
     }
 
-    @Transactional
     @Override
     public void deleteUser(Long id) {
         if (userRepository.existsById(id)) {

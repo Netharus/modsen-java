@@ -1,12 +1,11 @@
-package com.example.springPizza.service;
+package com.example.springPizza.services;
 
 import com.example.springPizza.database.models.Product;
-import com.example.springPizza.database.models.dto.ProductDTO;
+import com.example.springPizza.mappers.dtos.ProductDTO;
 import com.example.springPizza.repositories.ProductRepository;
-import com.example.springPizza.service.interfaces.ProductService;
+import com.example.springPizza.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,21 +15,18 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
 @Slf4j
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
 
     @Override
-    @Transactional
     public Product createProduct(ProductDTO productDTO) {
         Product product = convertFromDTO(productDTO);
         return productRepository.save(product);
     }
 
     @Override
-    @Transactional
     public Product updateProduct(Long id, ProductDTO productDTO) throws Exception {
         productRepository.findById(id).orElseThrow(() -> new Exception("Product not found"));
         Product product = convertFromDTO(productDTO);
@@ -38,7 +34,6 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
     public void deleteProduct(Long id) {
         if (productRepository.existsById(id)) {
             productRepository.deleteById(id);
@@ -47,26 +42,31 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public ProductDTO getProductById(Long id) throws Exception {
         return convertToDTO(productRepository.findById(id).orElseThrow(() -> new Exception("Product not found")));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductDTO> getProductByName(String name) {
         return productRepository.findAllByName(name).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductDTO> getProductByPriceLessThan(BigDecimal price) {
         return productRepository.findAllByPriceLessThan(price).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductDTO> getAllProducts() {
         return productRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<ProductDTO> getProductsByCategory(Long categoryId) {
         return productRepository.findAllByCategoryId(categoryId).stream().map(this::convertToDTO).collect(Collectors.toList());

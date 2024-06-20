@@ -17,3 +17,4 @@ databaseChangeLog:
                   type: varchar(40)
                   constraints:
                     nullable: false
+                    unique: true

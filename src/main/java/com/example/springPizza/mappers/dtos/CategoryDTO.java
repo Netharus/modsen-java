@@ -1,7 +1,6 @@
-package com.example.springPizza.database.models.dto;
+package com.example.springPizza.mappers.dtos;
 
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 @Data
 public class CategoryDTO {

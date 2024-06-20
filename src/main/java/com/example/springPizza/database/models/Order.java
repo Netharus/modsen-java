@@ -1,11 +1,10 @@
 package com.example.springPizza.database.models;
 
 import jakarta.persistence.*;
-import lombok.*;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor

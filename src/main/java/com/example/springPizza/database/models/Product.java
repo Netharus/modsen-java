@@ -2,7 +2,6 @@ package com.example.springPizza.database.models;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
@@ -12,6 +11,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @Entity
+@Builder
 @Table(name = "products")
 public class Product {
     @Id

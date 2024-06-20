@@ -3,10 +3,6 @@ package com.example.springPizza.database.models;
 import com.example.springPizza.database.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor

@@ -1,12 +1,11 @@
-package com.example.springPizza.service;
+package com.example.springPizza.services;
 
 import com.example.springPizza.database.models.Order;
+import com.example.springPizza.mappers.dtos.OrderDTO;
 import com.example.springPizza.repositories.OrderRepository;
-import com.example.springPizza.database.models.dto.OrderDTO;
-import com.example.springPizza.service.interfaces.OrderService;
+import com.example.springPizza.services.interfaces.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,36 +14,36 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
 @Slf4j
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
 
+    @Transactional(readOnly = true)
     @Override
     public List<OrderDTO> getAllOrders() {
         return orderRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
+    @Transactional(readOnly = true)
     @Override
     public OrderDTO getOrderById(Long id) throws Exception {
         return convertToDTO(orderRepository.findById(id).orElseThrow(() -> new Exception("Category not found")));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<OrderDTO> getALLByUserId(Long userId) {
         return orderRepository.findAllByUserId(userId).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     @Override
-    @Transactional
     public Order createOrder(OrderDTO orderDTO) {
         Order order = convertFromDTO(orderDTO);
         return orderRepository.save(order);
     }
 
     @Override
-    @Transactional
     public Order updateOrder(Long id, OrderDTO orderDTO) throws Exception {
         orderRepository.findById(id).orElseThrow(() -> new Exception("Order not found"));
         Order order = convertFromDTO(orderDTO);
@@ -52,7 +51,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
     public void deleteOrder(Long id) {
         if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);

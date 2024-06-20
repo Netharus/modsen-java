@@ -1,12 +1,11 @@
-package com.example.springPizza.service;
+package com.example.springPizza.services;
 
 import com.example.springPizza.database.models.Category;
+import com.example.springPizza.mappers.dtos.CategoryDTO;
 import com.example.springPizza.repositories.CategoryRepository;
-import com.example.springPizza.database.models.dto.CategoryDTO;
-import com.example.springPizza.service.interfaces.CategoryService;
+import com.example.springPizza.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,23 +14,19 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
 @Slf4j
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
 
-    @Transactional
     @Override
     public Category createCategory(CategoryDTO categoryDTO) {
         Category category = convertFromDTO(categoryDTO);
         return categoryRepository.save(category);
     }
 
-
     //TODO: custom errors
     @Override
-    @Transactional
     public Category updateCategory(Long id, CategoryDTO categoryDTO) throws Exception {
         categoryRepository.findById(id).orElseThrow(() -> new Exception("Product not found"));
         Category category = convertFromDTO(categoryDTO);
@@ -39,7 +34,6 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    @Transactional
     public void deleteCategory(Long id) {
         if (categoryRepository.existsById(id)) {
             categoryRepository.deleteById(id);
@@ -50,16 +44,19 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     //TODO: custom errors
+    @Transactional(readOnly = true)
     @Override
     public CategoryDTO getCategoryById(Long id) throws Exception {
         return convertToDTO(categoryRepository.findById(id).orElseThrow(() -> new Exception("Category not found")));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public CategoryDTO getCategoryByName(String name) throws Exception {
         return convertToDTO(categoryRepository.findByName(name).orElseThrow(() -> new Exception("Category not found")));
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<CategoryDTO> getAllCategories() {
         return categoryRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());

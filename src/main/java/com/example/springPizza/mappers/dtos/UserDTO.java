@@ -1,8 +1,7 @@
-package com.example.springPizza.database.models.dto;
+package com.example.springPizza.mappers.dtos;
 
 import com.example.springPizza.database.models.enums.Role;
 import lombok.Data;
-import org.springframework.stereotype.Component;
 
 @Data
 public class UserDTO {
