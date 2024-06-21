@@ -26,11 +26,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: category_id
-                  type: bigint
+                  name: category_name
+                  type: varchar(40)
                   constraints:
                     foreignKeyName: product_category_fk
-                    references: categories(id)
+                    references: categories(name)
               - column:
                   name: photo
                   type: varchar(255)

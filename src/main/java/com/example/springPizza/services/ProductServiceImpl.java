@@ -68,8 +68,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductDTO> getProductsByCategory(Long categoryId) {
-        return productRepository.findAllByCategoryId(categoryId).stream().map(this::convertToDTO).collect(Collectors.toList());
+    public List<ProductDTO> getProductsByCategory(String categoryName) {
+        return productRepository.findAllByCategoryName(categoryName).stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
     private ProductDTO convertToDTO(Product product) {
@@ -78,7 +78,7 @@ public class ProductServiceImpl implements ProductService {
         productDTO.setName(product.getName());
         productDTO.setDescription(product.getDescription());
         productDTO.setPrice(product.getPrice());
-        productDTO.setCategoryId(Long.valueOf(product.getCategoryId()));
+        // productDTO.setCategoryId(Long.valueOf(product.getCategoryId())); - ругается, потому что id теперь нет
         return productDTO;
     }
 
@@ -88,7 +88,7 @@ public class ProductServiceImpl implements ProductService {
         product.setName(productDTO.getName());
         product.setDescription(productDTO.getDescription());
         product.setPrice(productDTO.getPrice());
-        product.setCategoryId(Math.toIntExact(productDTO.getCategoryId()));
+        // product.setCategoryId(Math.toIntExact(productDTO.getCategoryId())); - ругается, потому что id теперь нет
         return product;
     }
 

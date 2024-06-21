@@ -14,5 +14,5 @@ public interface ProductService {
     List<ProductDTO> getProductByName(String name);
     List<ProductDTO> getProductByPriceLessThan(BigDecimal price); // gets products with price lower than price in args
     List<ProductDTO> getAllProducts();
-    List<ProductDTO> getProductsByCategory(Long categoryId);
+    List<ProductDTO> getProductsByCategory(String categoryName);
 }

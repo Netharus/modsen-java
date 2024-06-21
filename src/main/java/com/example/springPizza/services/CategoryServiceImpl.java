@@ -64,14 +64,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     private CategoryDTO convertToDTO(Category category) {
         CategoryDTO categoryDTO = new CategoryDTO();
-        categoryDTO.setId(category.getId());
+        // categoryDTO.setId(category.getId()); - ругается, потому что id теперь нет
         categoryDTO.setName(category.getName());
         return categoryDTO;
     }
 
     private Category convertFromDTO(CategoryDTO categoryDTO) {
         Category category = new Category();
-        category.setId(categoryDTO.getId());
+        // category.setId(categoryDTO.getId()); - ругается, потому что id теперь нет
         category.setName(categoryDTO.getName());
         return category;
     }

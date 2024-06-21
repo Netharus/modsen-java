@@ -18,14 +18,4 @@ public class ProductMapperUtil {
         // TODO: 19.06.2024
         return null;
     }
-
-    @Named("mapCategoryNameToId")
-    public Long mapCategoryNameToId(String categoryName) {
-        return 1L;
-    }
-
-    @Named("mapCategoryIdToName")
-    public String mapCategoryIdToName(Long categoryId) {
-        return categoryId.toString();
-    }
 }
