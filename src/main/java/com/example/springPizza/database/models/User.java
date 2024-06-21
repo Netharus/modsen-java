@@ -4,6 +4,8 @@ import com.example.springPizza.database.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -23,6 +25,18 @@ public class User {
 
     @Column(length = 30, nullable = false, name = "username")
     private String username;
+
+    @Column(length = 50, nullable = false, unique = true, name = "email")
+    private String email;
+
+    @Column(length = 100, nullable = false, name = "full_name")
+    private String fullName;
+
+    @Column(length = 10, nullable = false, name = "gender")
+    private String gender;
+
+    @Column(nullable = false, name = "birth_date")
+    private LocalDate birthDate;
 
     @Column(nullable = false, unique = true, name = "phone_number")
     private String phoneNumber;
