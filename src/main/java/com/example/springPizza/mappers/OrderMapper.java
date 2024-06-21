@@ -1,16 +1,32 @@
 package com.example.springPizza.mappers;
 
+import com.example.springPizza.database.models.Order;
+import com.example.springPizza.database.models.Product;
+import com.example.springPizza.database.models.User;
+import com.example.springPizza.mappers.dtos.OrderResponse;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+import java.util.List;
+import java.util.stream.IntStream;
+
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
+        uses = ProductMapper.class
+)
 public interface OrderMapper {
-//
-//    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "userId", qualifiedByName = "mapUserLoginToId")
-//    Order toModel(OrderRequest orderRequest);
-//
-//    OrderResponse toResponse(Order order);
-//
-//    List<OrderResponse> toResponses(List<Order> order);
+    @Mapping(target = "id", source = "order.id")
+    @Mapping(target = "login", source = "user.login")
+    @Mapping(target = "products", source = "products")
+    OrderResponse toResponse(Order order, User user, List<Product> products);
+
+    default List<OrderResponse> toResponses(List<Order> orders, List<User> users, List<List<Product>> products) {
+        if (orders.size() != users.size() || orders.size() != products.size()) {
+            throw new IllegalArgumentException("Размеры списков orders, users и products должны быть одинаковы");
+        }
+
+        return IntStream.range(0, orders.size())
+                .mapToObj(i -> toResponse(orders.get(i), users.get(i), products.get(i)))
+                .toList();
+    }
 }

@@ -10,7 +10,6 @@ import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
-
     Category toModel(CategoryRequest categoryRequest);
 
     CategoryResponse toResponse(Category category);

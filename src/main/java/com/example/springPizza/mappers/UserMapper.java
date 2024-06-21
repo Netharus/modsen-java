@@ -12,7 +12,7 @@ import org.mapstruct.MappingConstants;
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {UserMapperUtil.class}
+        uses = UserMapperUtil.class
 )
 public interface UserMapper {
     @Mapping(target = "id", ignore = true)
@@ -30,5 +30,4 @@ public interface UserMapper {
 
     @Mapping(target = "role", qualifiedByName = "mapRoleToString", source = "role")
     List<UserResponse> toResponses(List<User> users);
-
 }

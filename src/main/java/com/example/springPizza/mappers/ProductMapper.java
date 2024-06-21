@@ -11,7 +11,7 @@ import org.mapstruct.MappingConstants;
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING,
-        uses = {ProductMapperUtil.class}
+        uses = ProductMapperUtil.class
 )
 public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
