@@ -8,6 +8,7 @@ import com.example.springPizza.utils.UserMapperUtil;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
+import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
@@ -24,6 +25,10 @@ public interface UserMapper {
     @Mapping(target = "phoneNumber", ignore = true)
     @Mapping(target = "role", ignore = true)
     User toModel(UserLoginRequest userLoginRequest);
+
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "role", ignore = true)
+    void updateModel(UserRequest userRequest, @MappingTarget User user);
 
     @Mapping(target = "role", qualifiedByName = "mapRoleToString", source = "role")
     UserResponse toResponse(User user);

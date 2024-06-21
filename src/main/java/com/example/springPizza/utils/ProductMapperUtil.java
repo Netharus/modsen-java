@@ -18,4 +18,10 @@ public class ProductMapperUtil {
         // TODO: 19.06.2024
         return null;
     }
+
+    @Named(value = "updatePhotoToName")
+    public String updatePhotoToName(MultipartFile photo) {
+        // TODO: 19.06.2024
+        return null;
+    }
 }
