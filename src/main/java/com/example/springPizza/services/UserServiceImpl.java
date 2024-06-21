@@ -7,6 +7,7 @@ import com.example.springPizza.repositories.UserRepository;
 import com.example.springPizza.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
     @Override
@@ -46,14 +48,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User createUser(UserDTO userDTO) {
+        if (userRepository.existsByLogin(userDTO.getLogin())) {
+            throw new IllegalArgumentException("Login already exists");
+        }
         User user = convertFromDTO(userDTO);
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
     public User updateUser(Long id, UserDTO userDTO) throws Exception {
-        userRepository.findById(id).orElseThrow(() -> new Exception("User not found"));
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new Exception("User not found"));
+        if (!existingUser.getLogin().equals(userDTO.getLogin()) && userRepository.existsByLogin(userDTO.getLogin())){
+            throw new IllegalArgumentException("Login already exists");
+        }
         User user = convertFromDTO(userDTO);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.saveAndFlush(user);
     }
 
