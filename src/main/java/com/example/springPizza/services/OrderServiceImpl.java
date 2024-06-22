@@ -1,6 +1,6 @@
 package com.example.springPizza.services;
 
-import com.example.springPizza.database.models.Order;
+import com.example.springPizza.models.Order;
 import com.example.springPizza.mappers.dtos.OrderDTO;
 import com.example.springPizza.repositories.OrderRepository;
 import com.example.springPizza.services.interfaces.OrderService;
@@ -69,7 +69,7 @@ public class OrderServiceImpl implements OrderService {
     private Order convertFromDTO(OrderDTO orderDTO) {
         Order order = new Order();
         order.setId(orderDTO.getId());
-        order.setUserId(Math.toIntExact(orderDTO.getUserId()));
+        order.setUserId(orderDTO.getUserId());
         return order;
     }
 }

@@ -1,6 +1,6 @@
 package com.example.springPizza.mappers;
 
-import com.example.springPizza.database.models.User;
+import com.example.springPizza.models.User;
 import com.example.springPizza.mappers.dtos.UserLoginRequest;
 import com.example.springPizza.mappers.dtos.UserRequest;
 import com.example.springPizza.mappers.dtos.UserResponse;

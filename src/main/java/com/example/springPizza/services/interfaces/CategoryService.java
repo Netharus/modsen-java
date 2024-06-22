@@ -1,6 +1,6 @@
 package com.example.springPizza.services.interfaces;
 
-import com.example.springPizza.database.models.Category;
+import com.example.springPizza.models.Category;
 import com.example.springPizza.mappers.dtos.CategoryDTO;
 
 import java.util.List;

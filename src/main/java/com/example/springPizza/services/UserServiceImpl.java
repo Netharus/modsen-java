@@ -1,8 +1,8 @@
 package com.example.springPizza.services;
 
-import com.example.springPizza.database.models.User;
+import com.example.springPizza.models.User;
 import com.example.springPizza.mappers.dtos.UserDTO;
-import com.example.springPizza.database.models.enums.Role;
+import com.example.springPizza.models.enums.Role;
 import com.example.springPizza.repositories.UserRepository;
 import com.example.springPizza.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;

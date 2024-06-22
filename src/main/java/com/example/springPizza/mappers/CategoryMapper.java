@@ -1,6 +1,6 @@
 package com.example.springPizza.mappers;
 
-import com.example.springPizza.database.models.Category;
+import com.example.springPizza.models.Category;
 import com.example.springPizza.mappers.dtos.CategoryRequest;
 import com.example.springPizza.mappers.dtos.CategoryResponse;
 import org.mapstruct.Mapper;

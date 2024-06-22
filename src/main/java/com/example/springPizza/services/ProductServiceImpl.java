@@ -1,6 +1,6 @@
 package com.example.springPizza.services;
 
-import com.example.springPizza.database.models.Product;
+import com.example.springPizza.models.Product;
 import com.example.springPizza.mappers.dtos.ProductDTO;
 import com.example.springPizza.repositories.ProductRepository;
 import com.example.springPizza.services.interfaces.ProductService;

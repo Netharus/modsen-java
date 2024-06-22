@@ -1,6 +1,6 @@
 package com.example.springPizza.services.interfaces;
 
-import com.example.springPizza.database.models.Product;
+import com.example.springPizza.models.Product;
 import com.example.springPizza.mappers.dtos.ProductDTO;
 
 import java.math.BigDecimal;

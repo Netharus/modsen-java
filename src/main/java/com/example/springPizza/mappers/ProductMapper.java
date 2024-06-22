@@ -1,6 +1,6 @@
 package com.example.springPizza.mappers;
 
-import com.example.springPizza.database.models.Product;
+import com.example.springPizza.models.Product;
 import com.example.springPizza.mappers.dtos.ProductRequest;
 import com.example.springPizza.mappers.dtos.ProductResponse;
 import com.example.springPizza.utils.ProductMapperUtil;

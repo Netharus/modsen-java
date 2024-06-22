@@ -1,7 +1,7 @@
 package com.example.springPizza.utils;
 
 
-import com.example.springPizza.database.models.enums.Role;
+import com.example.springPizza.models.enums.Role;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 

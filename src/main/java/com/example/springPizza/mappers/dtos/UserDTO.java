@@ -1,6 +1,6 @@
 package com.example.springPizza.mappers.dtos;
 
-import com.example.springPizza.database.models.enums.Role;
+import com.example.springPizza.models.enums.Role;
 import lombok.Data;
 
 @Data

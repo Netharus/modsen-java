@@ -1,4 +1,4 @@
-package com.example.springPizza.database.models;
+package com.example.springPizza.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

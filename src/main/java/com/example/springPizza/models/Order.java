@@ -1,4 +1,4 @@
-package com.example.springPizza.database.models;
+package com.example.springPizza.models;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -18,5 +18,5 @@ public class Order {
     private Long id;
 
     @Column(name = "user_id")
-    private Integer userId;
+    private Long userId;
 }

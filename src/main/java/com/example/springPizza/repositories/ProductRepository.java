@@ -1,6 +1,6 @@
 package com.example.springPizza.repositories;
 
-import com.example.springPizza.database.models.Product;
+import com.example.springPizza.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

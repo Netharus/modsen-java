@@ -1,6 +1,6 @@
 package com.example.springPizza.services.interfaces;
 
-import com.example.springPizza.database.models.User;
+import com.example.springPizza.models.User;
 import com.example.springPizza.mappers.dtos.UserDTO;
 
 import java.util.List;

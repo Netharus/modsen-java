@@ -1,8 +1,8 @@
 package com.example.springPizza.mappers;
 
-import com.example.springPizza.database.models.Order;
-import com.example.springPizza.database.models.Product;
-import com.example.springPizza.database.models.User;
+import com.example.springPizza.models.Order;
+import com.example.springPizza.models.Product;
+import com.example.springPizza.models.User;
 import com.example.springPizza.mappers.dtos.OrderResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
