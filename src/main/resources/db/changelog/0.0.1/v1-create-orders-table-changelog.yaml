@@ -19,19 +19,21 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: user_id_fk
                     references: users(id)
-        rollback:
-          - dropTable:
-              tableName: orders
+      rollback:
+        - dropTable:
+            tableName: orders
+        - dropAllForeignKeyConstraints:
+            baseTableName: user_id_fk
   - changeSet:
       id: v1-4-1
       author: Mikhail Kondratsiuk
       preConditions:
+        - onFail: MARK_RAN
         - tableExists:
             tableName: orders
-        - onFail: MARK_RAN
         - tableIsEmpty:
             tableName: orders
-        changes:
+      changes:
           - loadData:
-              file: db/data/orders.json
+              file: db/data/orders.csv
               tableName: orders

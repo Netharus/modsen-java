@@ -26,27 +26,30 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: category_id
-                  type: bigint
+                  name: category_name
+                  type: varchar(40)
                   constraints:
                     foreignKeyName: product_category_fk
-                    references: categories(id)
+                    references: categories(name)
               - column:
                   name: photo
                   type: varchar(255)
       rollback:
+        - dropAllForeignKeyConstraints:
+            baseTableName: products
         - dropTable:
             tableName: products
+
   - changeSet:
       id: v1-2-1
       author: Mikhail Kondratsiuk
       preConditions:
+        - onFail: MARK_RAN
         - tableExists:
             tableName: products
-        - onFail: MARK_RAN
         - tableIsEmpty:
             tableName: products
-        changes:
+      changes:
           - loadData:
-              file: db/data/products.json
+              file: db/data/products.csv
               tableName: products

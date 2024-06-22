@@ -47,12 +47,12 @@ databaseChangeLog:
       id: v1-3-1
       author: Mikhail Kondratsiuk
       preConditions:
+        - onFail: MARK_RAN
         - tableExists:
             tableName: users
-        - onFail: MARK_RAN
         - tableIsEmpty:
             tableName: users
-        changes:
+      changes:
           - loadData:
-              file: db/data/users.json
+              file: db/data/users.csv
               tableName: users

@@ -4,32 +4,27 @@ databaseChangeLog:
       author: Mikhail Kondratsiuk
       changes:
         - createTable:
-            tableName: v
+            tableName: categories
             columns:
-              - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
               - column:
                   name: name
                   type: varchar(40)
                   constraints:
-                    nullable: false
+                    primaryKey: true
       rollback:
         - dropTable:
             tableName: categories
+
   - changeSet:
       id: v1-1-1
       author: Mikhail Kondratsiuk
       preConditions:
+        - onFail: MARK_RAN
         - tableExists:
             tableName: categories
-        - onFail: MARK_RAN
         - tableIsEmpty:
             tableName: categories
-        changes:
-          - loadData:
-              file: db/data/categories.json
-              tableName: categories
+      changes:
+        - loadData:
+            file: db/data/categories.csv
+            tableName: categories
