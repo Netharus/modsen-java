@@ -31,7 +31,7 @@ public class Product {
     @Column(name = "photo")
     private String photo;
 
-    @Column(name = "category_id")
-    private Integer categoryId;
+    @Column(name = "category_name")
+    private String categoryName;
 
 }
