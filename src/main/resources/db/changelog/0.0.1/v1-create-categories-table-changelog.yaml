@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-1
+      author: Mikhail Kondratsiuk
+      changes:
+        - createTable:
+            tableName: categories
+            columns:
+              - column:
+                  name: name
+                  type: varchar(40)
+                  constraints:
+                    primaryKey: true
+
