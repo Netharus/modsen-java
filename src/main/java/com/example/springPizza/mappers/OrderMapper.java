@@ -1,5 +1,6 @@
 package com.example.springPizza.mappers;
 
+import com.example.springPizza.mappers.dtos.OrderRequest;
 import com.example.springPizza.models.Order;
 import com.example.springPizza.models.Product;
 import com.example.springPizza.models.User;
@@ -15,6 +16,9 @@ import java.util.stream.IntStream;
         uses = ProductMapper.class
 )
 public interface OrderMapper {
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "userId", ignore = true)
+    Order toModel(OrderRequest orderRequest);
     @Mapping(target = "id", source = "order.id")
     @Mapping(target = "login", source = "user.login")
     @Mapping(target = "products", source = "products")
