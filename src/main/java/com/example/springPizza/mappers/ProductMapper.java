@@ -16,16 +16,14 @@ import java.util.List;
 )
 public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "photo", qualifiedByName = "mapPhotoToName", source = "photo")
+    @Mapping(target = "imageUrl", qualifiedByName = "mapImageToName", source = "imageUrl")
     Product toModel(ProductRequest productRequest);
 
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "photo", qualifiedByName = "updatePhotoToName", source = "photo")
+    @Mapping(target = "imageUrl", qualifiedByName = "mapImageToName", source = "imageUrl")
     void updateModel(ProductRequest productRequest, @MappingTarget Product product);
 
-    @Mapping(target = "photo", qualifiedByName = "mapNameToPhoto", source = "photo")
     ProductResponse toResponse(Product product);
 
-    @Mapping(target = "photo", qualifiedByName = "mapNameToPhoto", source = "photo")
     List<ProductResponse> toResponses(List<Product> products);
 }

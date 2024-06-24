@@ -28,7 +28,7 @@ public class Product {
     private String description;
 
     @Column(name = "photo")
-    private String photo;
+    private String imageUrl;
 
     @Column(name = "category_name")
     private String categoryName;

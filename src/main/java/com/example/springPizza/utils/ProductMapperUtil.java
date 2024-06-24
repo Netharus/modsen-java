@@ -1,27 +1,18 @@
 package com.example.springPizza.utils;
 
+import lombok.RequiredArgsConstructor;
 import org.mapstruct.Named;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 
+@RequiredArgsConstructor
 @Component
 public class ProductMapperUtil {
-    @Named(value = "mapPhotoToName")
-    public String mapPhotoToName(MultipartFile photo) {
-        // TODO: 19.06.2024
-        return null;
-    }
+    private final ImgurUtil imgurUtil;
 
-    @Named(value = "mapNameToPhoto")
-    public MultipartFile mapNameToPhoto(String photoName) {
-        // TODO: 19.06.2024
-        return null;
-    }
-
-    @Named(value = "updatePhotoToName")
-    public String updatePhotoToName(MultipartFile photo) {
-        // TODO: 19.06.2024
-        return null;
+    @Named(value = "mapImageToName")
+    public String mapImageToName(MultipartFile image) throws Exception {
+        return imgurUtil.saveImage(image);
     }
 }
