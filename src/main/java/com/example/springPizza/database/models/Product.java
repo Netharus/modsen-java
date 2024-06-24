@@ -19,23 +19,19 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 40, nullable = false)
+    @Column(length = 40, nullable = false, name = "name")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "price")
     private BigDecimal price;
 
-    @Column(length = 200)
+    @Column(length = 200, name = "description")
     private String description;
 
-    // private String photo;
+    @Column(name = "photo")
+    private String photo;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
-    private Category category;
-
-    @Builder.Default
-    @ManyToMany(mappedBy = "products")
-    private List<Order> orders = new ArrayList<>();
+    @Column(name = "category_name")
+    private String categoryName;
 
 }

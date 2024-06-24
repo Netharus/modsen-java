@@ -1,0 +1,39 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-4
+      author: Mikhail Kondratsiuk
+      changes:
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: user_id_fk
+                    references: users(id)
+      rollback:
+        - dropTable:
+            tableName: orders
+        - dropAllForeignKeyConstraints:
+            baseTableName: user_id_fk
+  - changeSet:
+      id: v1-4-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: orders
+        - tableIsEmpty:
+            tableName: orders
+      changes:
+          - loadData:
+              file: db/data/orders.csv
+              tableName: orders

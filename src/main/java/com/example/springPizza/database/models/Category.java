@@ -14,14 +14,12 @@ import java.util.List;
 @Entity
 @Table(name = "categories")
 public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
 
+    @Id
     @Column(length = 40, nullable = false)
     private String name;
 
-    @Builder.Default
-    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
-    private List<Product> products = new ArrayList<>();
+//    @Builder.Default
+//    @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST)
+//    private List<Product> products = new ArrayList<>();
 }

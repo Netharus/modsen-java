@@ -1,0 +1,55 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-2
+      author: Mikhail Kondratsiuk
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: description
+                  type: varchar(200)
+              - column:
+                  name: name
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: price
+                  type: numeric(38,2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: category_name
+                  type: varchar(40)
+                  constraints:
+                    foreignKeyName: product_category_fk
+                    references: categories(name)
+              - column:
+                  name: photo
+                  type: varchar(255)
+      rollback:
+        - dropAllForeignKeyConstraints:
+            baseTableName: products
+        - dropTable:
+            tableName: products
+
+  - changeSet:
+      id: v1-2-1
+      author: Mikhail Kondratsiuk
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: products
+        - tableIsEmpty:
+            tableName: products
+      changes:
+          - loadData:
+              file: db/data/products.csv
+              tableName: products
