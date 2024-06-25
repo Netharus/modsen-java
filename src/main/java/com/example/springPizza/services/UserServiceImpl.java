@@ -1,5 +1,6 @@
 package com.example.springPizza.services;
 
+import com.example.springPizza.exceptions.UserNotFoundException;
 import com.example.springPizza.mappers.UserMapper;
 import com.example.springPizza.mappers.dtos.UserRequest;
 import com.example.springPizza.mappers.dtos.UserResponse;
@@ -21,18 +22,16 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
     public UserResponse getUserByUsername(String username) {
-        return userMapper.toResponse(userRepository.findByUsername(username).orElseThrow(RuntimeException::new));
+        return userMapper.toResponse(userRepository.findByUsername(username).orElseThrow(UserNotFoundException::new));
     }
 
-    //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
     public UserResponse getUserByLogin(String login) {
-        return userMapper.toResponse(userRepository.findByLogin(login).orElseThrow(RuntimeException::new));
+        return userMapper.toResponse(userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new));
     }
 
     @Transactional(readOnly = true)
@@ -41,11 +40,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponses(userRepository.findAll());
     }
 
-    //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
     public UserResponse getUserById(Long id) {
-        return userMapper.toResponse(userRepository.findById(id).orElseThrow(RuntimeException::new));
+        return userMapper.toResponse(userRepository.findById(id).orElseThrow(UserNotFoundException::new));
     }
 
     @Override
@@ -55,10 +53,9 @@ public class UserServiceImpl implements UserService {
         return userMapper.toResponse(user);
     }
 
-    //TODO: custom errors
     @Override
     public UserResponse updateUser(Long id, UserRequest request) {
-        userRepository.findByLogin(request.getLogin()).orElseThrow(RuntimeException::new);
+        userRepository.findByLogin(request.getLogin()).orElseThrow(UserNotFoundException::new);
         User user = userMapper.toModel(request);
         user.setId(id);
         return userMapper.toResponse(userRepository.saveAndFlush(user));

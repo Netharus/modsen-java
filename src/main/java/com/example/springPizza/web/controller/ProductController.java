@@ -2,8 +2,11 @@ package com.example.springPizza.web.controller;
 
 import com.example.springPizza.mappers.dtos.ProductRequest;
 import com.example.springPizza.mappers.dtos.ProductResponse;
+import com.example.springPizza.models.Order;
 import com.example.springPizza.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +22,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping()
-    public List<ProductResponse> findAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<List<ProductResponse>> findAllProducts(){
+        List<ProductResponse> productResponseList = productService.getAllProducts();
+        if (productResponseList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(productResponseList, HttpStatus.OK);
+        }
     }
 
     @PostMapping("/{id}")
@@ -29,18 +37,34 @@ public class ProductController {
     }
 
     @PostMapping("/{name}")
-    public List<ProductResponse> findProductByName(@PathVariable(name = "name") String name){
-        return productService.getProductByName(name);
+    public ResponseEntity<List<ProductResponse>> findProductByName(@PathVariable(name = "name") String name){
+        List<ProductResponse> productResponseList = productService.getProductByName(name);
+        if (productResponseList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(productResponseList, HttpStatus.OK);
+        }
     }
 
     @PostMapping("/{price}")
-    public List<ProductResponse> findProductByPrice(@PathVariable(name = "price") BigDecimal price){
-        return productService.getProductByPriceLessThan(price);
+    public ResponseEntity<List<ProductResponse>> findProductByPrice(@PathVariable(name = "price") BigDecimal price){
+        List<ProductResponse> productResponseList = productService.getProductByPriceLessThan(price);
+        if (productResponseList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(productResponseList, HttpStatus.OK);
+        }
+
     }
 
     @PostMapping("/{categoryId}")
-    public List<ProductResponse> findProductByCategory(@PathVariable(name = "categoryId") String categoryName){
-        return productService.getProductsByCategory(categoryName);
+    public ResponseEntity<List<ProductResponse>> findProductByCategory(@PathVariable(name = "categoryId") String categoryName){
+        List<ProductResponse> productResponseList = productService.getProductsByCategory(categoryName);
+        if (productResponseList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(productResponseList, HttpStatus.OK);
+        }
     }
 
     @PostMapping("/search")
@@ -60,7 +84,5 @@ public class ProductController {
     public void deleteProduct(@PathVariable(name = "id") Long id){
         productService.deleteProduct(id);
     }
-
-
 
 }

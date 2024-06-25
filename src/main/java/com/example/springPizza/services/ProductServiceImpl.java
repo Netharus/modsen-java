@@ -1,5 +1,6 @@
 package com.example.springPizza.services;
 
+import com.example.springPizza.exceptions.ProductNotFoundException;
 import com.example.springPizza.mappers.ProductMapper;
 import com.example.springPizza.mappers.dtos.ProductRequest;
 import com.example.springPizza.mappers.dtos.ProductResponse;
@@ -35,10 +36,9 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toResponse(product, image);
     }
 
-    //TODO: custom errors
     @Override
     public ProductResponse updateProduct(Long id, ProductRequest productRequest) {
-        Product oldProduct = productRepository.findById(id).orElseThrow(RuntimeException::new);
+        Product oldProduct = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         Image image = imageService.updateImage(oldProduct.getImageId(), productRequest.getImage());
 
         Product product = productMapper.toModel(productRequest);
@@ -48,19 +48,17 @@ public class ProductServiceImpl implements ProductService {
         return productMapper.toResponse(product, image);
     }
 
-    //TODO: custom errors
     @Override
     public void deleteProduct(Long id) {
-        Product deleteProduct = productRepository.findById(id).orElseThrow(RuntimeException::new);
+        Product deleteProduct = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         imageService.deleteImage(deleteProduct.getImageId());
         productRepository.deleteById(id);
     }
 
-    //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
     public ProductResponse getProductById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(RuntimeException::new);
+        Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         Image image = imageService.getImageById(product.getImageId());
         return productMapper.toResponse(product, image);
     }

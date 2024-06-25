@@ -2,8 +2,11 @@ package com.example.springPizza.web.controller;
 
 import com.example.springPizza.mappers.dtos.CategoryRequest;
 import com.example.springPizza.mappers.dtos.CategoryResponse;
+import com.example.springPizza.models.Category;
 import com.example.springPizza.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,16 +19,21 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryResponse> findAllCategory(){
-        return categoryService.getAllCategories();
+    public ResponseEntity<List<CategoryResponse>> findAllCategory(){
+        List<CategoryResponse> categoryList = categoryService.getAllCategories();
+        if (categoryList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(categoryList, HttpStatus.OK);
+        }
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public CategoryResponse findCategoryById(@PathVariable(name = "id") Long id) {
         return categoryService.getCategoryById(id);
     }
 
-    @PostMapping("/{name}")
+    @GetMapping("/getBy/{name}")
     public CategoryResponse findCategoryByName(@PathVariable(name = "name") String name) {
         return categoryService.getCategoryByName(name);
     }

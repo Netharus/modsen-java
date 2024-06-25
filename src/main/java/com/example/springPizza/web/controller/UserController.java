@@ -1,9 +1,12 @@
 package com.example.springPizza.web.controller;
 
+import com.example.springPizza.mappers.dtos.ProductResponse;
 import com.example.springPizza.mappers.dtos.UserRequest;
 import com.example.springPizza.mappers.dtos.UserResponse;
 import com.example.springPizza.services.interfaces.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,7 +49,12 @@ public class UserController {
 
     @PostMapping("/search")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<UserResponse> findAllUsers () {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserResponse>> findAllUsers () {
+        List<UserResponse> userResponseList = userService.getAllUsers();
+        if (userResponseList.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(userResponseList, HttpStatus.OK);
+        }
     }
 }

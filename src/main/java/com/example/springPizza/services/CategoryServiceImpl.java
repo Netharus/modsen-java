@@ -1,5 +1,6 @@
 package com.example.springPizza.services;
 
+import com.example.springPizza.exceptions.CategoryNotFoundException;
 import com.example.springPizza.mappers.CategoryMapper;
 import com.example.springPizza.mappers.dtos.CategoryRequest;
 import com.example.springPizza.mappers.dtos.CategoryResponse;
@@ -28,10 +29,9 @@ public class CategoryServiceImpl implements CategoryService {
         return categoryMapper.toResponse(category);
     }
 
-    //TODO: custom errors
     @Override
     public CategoryResponse updateCategory(String name, CategoryRequest categoryRequest)  {
-        categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Product not found"));
+        categoryRepository.findByName(name).orElseThrow(CategoryNotFoundException::new);
         Category category = categoryMapper.toModel(categoryRequest);
         categoryRepository.saveAndFlush(category);
         return categoryMapper.toResponse(category);
@@ -47,18 +47,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
-    //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
     public CategoryResponse getCategoryById(Long id) {
-        return categoryMapper.toResponse(categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found")));
+        return categoryMapper.toResponse(categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new));
     }
 
-    //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
     public CategoryResponse getCategoryByName(String name) {
-        return categoryMapper.toResponse(categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Category not found")));
+        return categoryMapper.toResponse(categoryRepository.findByName(name).orElseThrow(CategoryNotFoundException::new));
     }
 
     @Transactional(readOnly = true)

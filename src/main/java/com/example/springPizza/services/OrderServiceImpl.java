@@ -1,5 +1,7 @@
 package com.example.springPizza.services;
 
+import com.example.springPizza.exceptions.OrderNotFoundException;
+import com.example.springPizza.exceptions.UserNotFoundException;
 import com.example.springPizza.mappers.OrderMapper;
 import com.example.springPizza.mappers.dtos.OrderRequest;
 import com.example.springPizza.mappers.dtos.OrderResponse;
@@ -34,11 +36,10 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAll();
     }
 
-    //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
     public Order getOrderById(Long id){
-        return orderRepository.findById(id).orElseThrow(RuntimeException::new);
+        return orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
     }
 
     @Transactional(readOnly = true)
@@ -47,12 +48,11 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository.findAllByUserId(userId);
     }
 
-    //TODO: custom errors
     @Override
     public OrderResponse createOrder(OrderRequest request, UserDetails userDetails) {
         Order order = orderMapper.toModel(request);
 
-        User user = userRepository.findByLogin(userDetails.getUsername()).orElseThrow(RuntimeException::new);
+        User user = userRepository.findByLogin(userDetails.getUsername()).orElseThrow(UserNotFoundException::new);
         List<Product> products = productRepository.findAllById(request.getProductIds());
 
         order.setUserId(user.getId());
@@ -60,10 +60,9 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.toResponse(order, user, products);
     }
 
-    //TODO: custom errors
     @Override
     public OrderResponse updateOrder(Long id, OrderRequest request) {
-        orderRepository.findById(id).orElseThrow(RuntimeException::new);
+        orderRepository.findById(id).orElseThrow(OrderNotFoundException::new);
         Order order = orderMapper.toModel(request);
         order.setId(id);
         orderRepository.saveAndFlush(order);

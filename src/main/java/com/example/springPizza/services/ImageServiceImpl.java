@@ -1,5 +1,6 @@
 package com.example.springPizza.services;
 
+import com.example.springPizza.exceptions.ImageNotFoundException;
 import com.example.springPizza.models.Image;
 import com.example.springPizza.repositories.ImageRepository;
 import com.example.springPizza.services.interfaces.ImageService;
@@ -33,16 +34,15 @@ public class ImageServiceImpl implements ImageService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    //TODO: custom errors
     @Override
     public void deleteImage(Long id) {
-        Image deleteImage = imageRepository.findById(id).orElseThrow(RuntimeException::new);
+        Image deleteImage = imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
         imgurUtil.deleteImage(deleteImage);
         imageRepository.deleteById(id);
     }
 
     @Override
     public Image getImageById(Long id) {
-        return imageRepository.findById(id).orElseThrow(RuntimeException::new);
+        return imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
     }
 }
