@@ -1,0 +1,15 @@
+spring:
+  application.name: springPizza
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 7gex8y
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+imgur:
+    clientId: 6a70b7b44ac815e
+
+
