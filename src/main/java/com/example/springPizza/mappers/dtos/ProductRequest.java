@@ -15,7 +15,7 @@ public class ProductRequest {
     private BigDecimal price;
     @Size(max = 199, message = "The product description must be less than 199 characters")
     private String description;
-    private MultipartFile photo;
+    private MultipartFile image;
     @Size(min = 3, max = 39, message = "The category name must be between 3 and 39 characters")
     private String categoryName;
 }

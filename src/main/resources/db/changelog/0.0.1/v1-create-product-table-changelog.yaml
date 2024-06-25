@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: v1-2
+      id: v1-3
       author: Mikhail Kondratsiuk
       changes:
         - createTable:
@@ -32,5 +32,9 @@ databaseChangeLog:
                     foreignKeyName: product_category_fk
                     references: categories(name)
               - column:
-                  name: photo
-                  type: varchar(255)
+                  name: image_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: product_image_fk
+                    references: images(id)
+                    unique: true

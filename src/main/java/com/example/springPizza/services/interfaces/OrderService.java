@@ -1,15 +1,17 @@
 package com.example.springPizza.services.interfaces;
 
+import com.example.springPizza.mappers.dtos.OrderRequest;
+import com.example.springPizza.mappers.dtos.OrderResponse;
 import com.example.springPizza.models.Order;
-import com.example.springPizza.mappers.dtos.OrderDTO;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
 public interface OrderService {
-    List<OrderDTO> getAllOrders();
-    OrderDTO getOrderById(Long id) throws Exception;
-    List<OrderDTO> getALLByUserId(Long userId);
-    Order createOrder(OrderDTO orderDTO);
-    Order updateOrder(Long id, OrderDTO orderDTO) throws Exception;
+    List<Order> getAllOrders();
+    Order getOrderById(Long id);
+    List<Order> getALLByUserId(Long userId);
+    OrderResponse createOrder(OrderRequest request, UserDetails userDetails);
+    OrderResponse updateOrder(Long id, OrderRequest request);
     void deleteOrder(Long id);
 }

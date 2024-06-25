@@ -1,16 +1,22 @@
 package com.example.springPizza.services;
 
+import com.example.springPizza.mappers.OrderMapper;
+import com.example.springPizza.mappers.dtos.OrderRequest;
+import com.example.springPizza.mappers.dtos.OrderResponse;
 import com.example.springPizza.models.Order;
-import com.example.springPizza.mappers.dtos.OrderDTO;
+import com.example.springPizza.models.Product;
+import com.example.springPizza.models.User;
 import com.example.springPizza.repositories.OrderRepository;
+import com.example.springPizza.repositories.ProductRepository;
+import com.example.springPizza.repositories.UserRepository;
 import com.example.springPizza.services.interfaces.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -18,36 +24,51 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final OrderMapper orderMapper;
 
     @Transactional(readOnly = true)
     @Override
-    public List<OrderDTO> getAllOrders() {
-        return orderRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
+    public List<Order> getAllOrders() {
+        return orderRepository.findAll();
+    }
+
+    //TODO: custom errors
+    @Transactional(readOnly = true)
+    @Override
+    public Order getOrderById(Long id){
+        return orderRepository.findById(id).orElseThrow(RuntimeException::new);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public OrderDTO getOrderById(Long id) throws Exception {
-        return convertToDTO(orderRepository.findById(id).orElseThrow(() -> new Exception("Category not found")));
+    public List<Order> getALLByUserId(Long userId) {
+        return orderRepository.findAllByUserId(userId);
     }
 
-    @Transactional(readOnly = true)
+    //TODO: custom errors
     @Override
-    public List<OrderDTO> getALLByUserId(Long userId) {
-        return orderRepository.findAllByUserId(userId).stream().map(this::convertToDTO).collect(Collectors.toList());
+    public OrderResponse createOrder(OrderRequest request, UserDetails userDetails) {
+        Order order = orderMapper.toModel(request);
+
+        User user = userRepository.findByLogin(userDetails.getUsername()).orElseThrow(RuntimeException::new);
+        List<Product> products = productRepository.findAllById(request.getProductIds());
+
+        order.setUserId(user.getId());
+        orderRepository.save(order);
+        return orderMapper.toResponse(order, user, products);
     }
 
+    //TODO: custom errors
     @Override
-    public Order createOrder(OrderDTO orderDTO) {
-        Order order = convertFromDTO(orderDTO);
-        return orderRepository.save(order);
-    }
-
-    @Override
-    public Order updateOrder(Long id, OrderDTO orderDTO) throws Exception {
-        orderRepository.findById(id).orElseThrow(() -> new Exception("Order not found"));
-        Order order = convertFromDTO(orderDTO);
-        return orderRepository.saveAndFlush(order);
+    public OrderResponse updateOrder(Long id, OrderRequest request) {
+        orderRepository.findById(id).orElseThrow(RuntimeException::new);
+        Order order = orderMapper.toModel(request);
+        order.setId(id);
+        orderRepository.saveAndFlush(order);
+        User user = userRepository.findById(order.getId()).orElseThrow(RuntimeException::new);
+        return orderMapper.toResponse(order, user, productRepository.findAllById(request.getProductIds()));
     }
 
     @Override
@@ -57,19 +78,5 @@ public class OrderServiceImpl implements OrderService {
         } else {
             log.info("Tried delete not existing category");
         }
-    }
-
-    private OrderDTO convertToDTO(Order order) {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(order.getId());
-        orderDTO.setUserId(Long.valueOf(order.getUserId()));
-        return orderDTO;
-    }
-
-    private Order convertFromDTO(OrderDTO orderDTO) {
-        Order order = new Order();
-        order.setId(orderDTO.getId());
-        order.setUserId(orderDTO.getUserId());
-        return order;
     }
 }

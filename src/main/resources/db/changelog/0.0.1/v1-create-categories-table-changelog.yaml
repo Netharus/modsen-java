@@ -11,4 +11,3 @@ databaseChangeLog:
                   type: varchar(40)
                   constraints:
                     primaryKey: true
-

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: v1-3
+      id: v1-4
       author: Mikhail Kondratsiuk
       changes:
         - createTable:

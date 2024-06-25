@@ -1,6 +1,8 @@
 package com.example.springPizza.utils;
 
 import com.example.springPizza.configs.ImgurProperties;
+import com.example.springPizza.models.Image;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RequiredArgsConstructor
 @Component
 public class ImgurUtil {
@@ -18,42 +22,57 @@ public class ImgurUtil {
     private final RestTemplateBuilder restTemplateBuilder;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public String saveImage(MultipartFile multipartFile) throws Exception {
+    //TODO: custom errors
+    public Image saveImage(MultipartFile multipartFile) {
+        try {
+            ResponseEntity<String> imgurResponse = restTemplateBuilder.build()
+                    .exchange("https://api.imgur.com/3/image",
+                            HttpMethod.POST,
+                            RequestEntity.post("https://api.imgur.com/3/image")
+                                    .header("Authorization", "Client-ID " + imgurProperties.getClientId())
+                                    .body(multipartFile.getBytes()),
+                            String.class);
+
+            if (imgurResponse.getStatusCode().isError()) {
+                throw new RuntimeException();
+            }
+
+            JsonNode rootNode = objectMapper.readTree(imgurResponse.getBody());
+            String url = rootNode.path("data").path("link").asText();
+            String deleteHash = rootNode.path("data").path("deletehash").asText();
+
+            return Image.builder()
+                    .url(url)
+                    .deleteHash(deleteHash)
+                    .build();
+
+        } catch (JsonProcessingException jsonProcessingException) {
+            throw new RuntimeException();
+        } catch (IOException ioException) {
+            throw new RuntimeException();
+        }
+    }
+
+    public Image updateImage(MultipartFile newMultipartFile, Image oldImage) {
+        Image newImage = saveImage(newMultipartFile);
+        deleteImage(oldImage);
+
+        oldImage.setUrl(newImage.getUrl());
+        oldImage.setDeleteHash(newImage.getDeleteHash());
+
+        return oldImage;
+    }
+
+    //TODO: custom errors
+    public void deleteImage(Image image) {
         ResponseEntity<String> imgurResponse = restTemplateBuilder.build()
-                .exchange("https://api.imgur.com/3/image",
-                        HttpMethod.POST,
-                        RequestEntity.post("https://api.imgur.com/3/image")
+                .exchange(RequestEntity.delete("https://api.imgur.com/3/image/" + image.getDeleteHash())
                                 .header("Authorization", "Client-ID " + imgurProperties.getClientId())
-                                .body(multipartFile.getBytes()),
+                                .build(),
                         String.class);
 
         if (imgurResponse.getStatusCode().isError()) {
-            // TODO: 24.06.2024 поменять исключение
-            throw new Exception();
+            throw new RuntimeException();
         }
-
-        JsonNode rootNode = objectMapper.readTree(imgurResponse.getBody());
-        return rootNode.path("data").path("link").asText();
     }
 }
-
-
-//        RestTemplate restTemplate = new RestTemplate();
-//
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-//        headers.set("Authorization", "Client-ID " + imgurProperties.getClientId());
-//
-//        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-//        body.add("image", multipartFile.getBytes());
-//
-//        HttpEntity<MultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-//
-//        ResponseEntity<String> response = restTemplate.exchange("https://api.imgur.com/3/image", HttpMethod.POST, requestEntity, String.class);
-//
-//        if (response.getStatusCode().is2xxSuccessful()) {
-//            String imageUrl = response.getBody();
-//            System.out.println("Image uploaded to Imgur: " + imageUrl);
-//        } else {
-//            System.out.println("Failed to upload image to Imgur. Status code: " + response.getStatusCode());
-//        }

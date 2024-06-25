@@ -27,8 +27,8 @@ public class Product {
     @Column(length = 200, name = "description")
     private String description;
 
-    @Column(name = "photo")
-    private String imageUrl;
+    @Column(name = "image_id")
+    private Long imageId;
 
     @Column(name = "category_name")
     private String categoryName;

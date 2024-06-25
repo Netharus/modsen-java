@@ -1,16 +1,16 @@
 package com.example.springPizza.services.interfaces;
 
-import com.example.springPizza.models.User;
-import com.example.springPizza.mappers.dtos.UserDTO;
+import com.example.springPizza.mappers.dtos.UserRequest;
+import com.example.springPizza.mappers.dtos.UserResponse;
 
 import java.util.List;
 
 public interface UserService {
-    List<UserDTO> getAllUsers();
-    UserDTO getUserById(Long id) throws Exception;
-    UserDTO getUserByUsername(String username) throws Exception;
-    UserDTO getUserByLogin(String login) throws Exception;
-    User createUser(UserDTO userDTO);
-    User updateUser(Long id, UserDTO userDTO) throws Exception;
+    List<UserResponse> getAllUsers();
+    UserResponse getUserById(Long id);
+    UserResponse getUserByUsername(String username);
+    UserResponse getUserByLogin(String login);
+    UserResponse createUser(UserRequest request);
+    UserResponse updateUser(Long id, UserRequest request);
     void deleteUser(Long id);
 }

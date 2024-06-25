@@ -1,7 +1,9 @@
 package com.example.springPizza.services;
 
+import com.example.springPizza.mappers.CategoryMapper;
+import com.example.springPizza.mappers.dtos.CategoryRequest;
+import com.example.springPizza.mappers.dtos.CategoryResponse;
 import com.example.springPizza.models.Category;
-import com.example.springPizza.mappers.dtos.CategoryDTO;
 import com.example.springPizza.repositories.CategoryRepository;
 import com.example.springPizza.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -18,19 +19,22 @@ import java.util.stream.Collectors;
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryMapper categoryMapper;
 
     @Override
-    public Category createCategory(CategoryDTO categoryDTO) {
-        Category category = convertFromDTO(categoryDTO);
-        return categoryRepository.save(category);
+    public CategoryResponse createCategory(CategoryRequest categoryRequest) {
+        Category category = categoryMapper.toModel(categoryRequest);
+        categoryRepository.save(category);
+        return categoryMapper.toResponse(category);
     }
 
     //TODO: custom errors
     @Override
-    public Category updateCategory(Long id, CategoryDTO categoryDTO) throws Exception {
-        categoryRepository.findById(id).orElseThrow(() -> new Exception("Product not found"));
-        Category category = convertFromDTO(categoryDTO);
-        return categoryRepository.saveAndFlush(category);
+    public CategoryResponse updateCategory(String name, CategoryRequest categoryRequest)  {
+        categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Product not found"));
+        Category category = categoryMapper.toModel(categoryRequest);
+        categoryRepository.saveAndFlush(category);
+        return categoryMapper.toResponse(category);
     }
 
     @Override
@@ -46,33 +50,21 @@ public class CategoryServiceImpl implements CategoryService {
     //TODO: custom errors
     @Transactional(readOnly = true)
     @Override
-    public CategoryDTO getCategoryById(Long id) throws Exception {
-        return convertToDTO(categoryRepository.findById(id).orElseThrow(() -> new Exception("Category not found")));
+    public CategoryResponse getCategoryById(Long id) {
+        return categoryMapper.toResponse(categoryRepository.findById(id).orElseThrow(() -> new RuntimeException("Category not found")));
+    }
+
+    //TODO: custom errors
+    @Transactional(readOnly = true)
+    @Override
+    public CategoryResponse getCategoryByName(String name) {
+        return categoryMapper.toResponse(categoryRepository.findByName(name).orElseThrow(() -> new RuntimeException("Category not found")));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public CategoryDTO getCategoryByName(String name) throws Exception {
-        return convertToDTO(categoryRepository.findByName(name).orElseThrow(() -> new Exception("Category not found")));
+    public List<CategoryResponse> getAllCategories() {
+        return categoryMapper.toResponses(categoryRepository.findAll());
     }
 
-    @Transactional(readOnly = true)
-    @Override
-    public List<CategoryDTO> getAllCategories() {
-        return categoryRepository.findAll().stream().map(this::convertToDTO).collect(Collectors.toList());
-    }
-
-    private CategoryDTO convertToDTO(Category category) {
-        CategoryDTO categoryDTO = new CategoryDTO();
-        // categoryDTO.setId(category.getId()); - ругается, потому что id теперь нет
-        categoryDTO.setName(category.getName());
-        return categoryDTO;
-    }
-
-    private Category convertFromDTO(CategoryDTO categoryDTO) {
-        Category category = new Category();
-        // category.setId(categoryDTO.getId()); - ругается, потому что id теперь нет
-        category.setName(categoryDTO.getName());
-        return category;
-    }
 }

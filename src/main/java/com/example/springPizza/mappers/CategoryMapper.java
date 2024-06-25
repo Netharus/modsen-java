@@ -1,19 +1,17 @@
 package com.example.springPizza.mappers;
 
-import com.example.springPizza.models.Category;
 import com.example.springPizza.mappers.dtos.CategoryRequest;
 import com.example.springPizza.mappers.dtos.CategoryResponse;
+import com.example.springPizza.models.Category;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
-import org.mapstruct.MappingTarget;
 
 import java.util.List;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface CategoryMapper {
-    Category toModel(CategoryRequest categoryRequest);
 
-    void updateModel(CategoryRequest categoryRequest, @MappingTarget Category category);
+    Category toModel(CategoryRequest categoryRequest);
 
     CategoryResponse toResponse(Category category);
 

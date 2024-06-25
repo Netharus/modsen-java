@@ -3,6 +3,9 @@ databaseChangeLog:
       file: v1-create-categories-table-changelog.yaml
       relativeToChangelogFile: true
   - include:
+      file: v1-create-images-table-changelog.yaml
+      relativeToChangelogFile: true
+  - include:
       file: v1-create-product-table-changelog.yaml
       relativeToChangelogFile: true
   - include:
@@ -12,5 +15,5 @@ databaseChangeLog:
       file: v1-create-orders-table-changelog.yaml
       relativeToChangelogFile: true
   - include:
-      file: v1-create-order-items-table-changelog.yml
+      file: v1-create-order-items-table-changelog.yaml
       relativeToChangelogFile: true

@@ -1,15 +1,15 @@
 package com.example.springPizza.services.interfaces;
 
-import com.example.springPizza.models.Category;
-import com.example.springPizza.mappers.dtos.CategoryDTO;
+import com.example.springPizza.mappers.dtos.CategoryRequest;
+import com.example.springPizza.mappers.dtos.CategoryResponse;
 
 import java.util.List;
 
 public interface CategoryService {
-    Category createCategory(CategoryDTO categoryDTO);
-    Category updateCategory(Long id, CategoryDTO categoryDTO) throws Exception;
+    CategoryResponse createCategory(CategoryRequest categoryRequest);
+    CategoryResponse updateCategory(String name, CategoryRequest categoryRequest);
     void deleteCategory(Long id);
-    CategoryDTO getCategoryById(Long id) throws Exception; //TODO: add Exceptions for all models: CategoryNotFoundException
-    CategoryDTO getCategoryByName(String name) throws Exception;
-    List<CategoryDTO> getAllCategories();
+    CategoryResponse getCategoryById(Long id);
+    CategoryResponse getCategoryByName(String name);
+    List<CategoryResponse> getAllCategories();
 }

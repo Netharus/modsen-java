@@ -14,6 +14,6 @@ import lombok.Setter;
 @Table(name = "categories")
 public class Category {
     @Id
-    @Column(length = 40, nullable = false, unique = true)
+    @Column(length = 40, name = "name")
     private String name;
 }

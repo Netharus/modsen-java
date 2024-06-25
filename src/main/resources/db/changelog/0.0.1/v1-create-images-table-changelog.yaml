@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: v1-5
+      id: v1-2
       author: Mikhail Kondratsiuk
       changes:
         - createTable:
-            tableName: orders
+            tableName: images
             columns:
               - column:
                   name: id
@@ -13,9 +13,12 @@ databaseChangeLog:
                   constraints:
                     primaryKey: true
               - column:
-                  name: user_id
-                  type: bigint
+                  name: url
+                  type: varchar(100)
                   constraints:
                     nullable: false
-                    foreignKeyName: user_id_fk
-                    references: users(id)
+              - column:
+                  name: delete_hash
+                  type: varchar(40)
+                  constraints:
+                    nullable: false

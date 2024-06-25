@@ -1,18 +1,18 @@
 package com.example.springPizza.services.interfaces;
 
-import com.example.springPizza.models.Product;
-import com.example.springPizza.mappers.dtos.ProductDTO;
+import com.example.springPizza.mappers.dtos.ProductRequest;
+import com.example.springPizza.mappers.dtos.ProductResponse;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 public interface ProductService {
-    Product createProduct(ProductDTO productDTO);
-    Product updateProduct(Long id, ProductDTO productDTO) throws Exception;
+    ProductResponse createProduct(ProductRequest productRequest);
+    ProductResponse updateProduct(Long id, ProductRequest productRequest);
     void deleteProduct(Long id);
-    ProductDTO getProductById(Long id) throws Exception;
-    List<ProductDTO> getProductByName(String name);
-    List<ProductDTO> getProductByPriceLessThan(BigDecimal price); // gets products with price lower than price in args
-    List<ProductDTO> getAllProducts();
-    List<ProductDTO> getProductsByCategory(String categoryName);
+    ProductResponse getProductById(Long id);
+    List<ProductResponse> getProductByName(String name);
+    List<ProductResponse> getProductByPriceLessThan(BigDecimal price); // gets products with price lower than price in args
+    List<ProductResponse> getAllProducts();
+    List<ProductResponse> getProductsByCategory(String categoryName);
 }
