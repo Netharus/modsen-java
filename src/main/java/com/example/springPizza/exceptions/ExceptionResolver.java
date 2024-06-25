@@ -61,4 +61,16 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(value = ImgurUploadException.class)
+    ResponseEntity<HttpStatus> imgurUploadException(ImgurUploadException ex) {
+        log.error("ImgurUpload exception: {}", ex.getMessage());
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(value = ImgurDeleteException.class)
+    ResponseEntity<HttpStatus> imgurDeleteException(ImgurDeleteException ex) {
+        log.error("ImgurDelete exception: {}", ex.getMessage());
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

@@ -1,6 +1,8 @@
 package com.example.springPizza.utils;
 
 import com.example.springPizza.configs.ImgurProperties;
+import com.example.springPizza.exceptions.ImgurDeleteException;
+import com.example.springPizza.exceptions.ImgurUploadException;
 import com.example.springPizza.models.Image;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -22,7 +24,6 @@ public class ImgurUtil {
     private final RestTemplateBuilder restTemplateBuilder;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    //TODO: custom errors
     public Image saveImage(MultipartFile multipartFile) {
         try {
             ResponseEntity<String> imgurResponse = restTemplateBuilder.build()
@@ -34,7 +35,7 @@ public class ImgurUtil {
                             String.class);
 
             if (imgurResponse.getStatusCode().isError()) {
-                throw new RuntimeException();
+                throw new ImgurUploadException("Failed to upload image to Imgur.");
             }
 
             JsonNode rootNode = objectMapper.readTree(imgurResponse.getBody());
@@ -47,9 +48,9 @@ public class ImgurUtil {
                     .build();
 
         } catch (JsonProcessingException jsonProcessingException) {
-            throw new RuntimeException();
+            throw new ImgurUploadException("Failed to process JSON response from Imgur.", jsonProcessingException);
         } catch (IOException ioException) {
-            throw new RuntimeException();
+            throw new ImgurUploadException("Failed to upload image to Imgur.", ioException);
         }
     }
 
@@ -63,7 +64,6 @@ public class ImgurUtil {
         return oldImage;
     }
 
-    //TODO: custom errors
     public void deleteImage(Image image) {
         ResponseEntity<String> imgurResponse = restTemplateBuilder.build()
                 .exchange(RequestEntity.delete("https://api.imgur.com/3/image/" + image.getDeleteHash())
@@ -72,7 +72,7 @@ public class ImgurUtil {
                         String.class);
 
         if (imgurResponse.getStatusCode().isError()) {
-            throw new RuntimeException();
+            throw new ImgurDeleteException("Failed to delete image from Imgur.");
         }
     }
 }

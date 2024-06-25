@@ -23,7 +23,6 @@ public class ImageServiceImpl implements ImageService {
         return imageRepository.saveAndFlush(image);
     }
 
-    //TODO: custom errors
     @Override
     public Image updateImage(Long id, MultipartFile newMultipartFile) {
         return imageRepository.findById(id)
@@ -31,7 +30,7 @@ public class ImageServiceImpl implements ImageService {
                     Image image = imgurUtil.updateImage(newMultipartFile, oldImage);
                     return imageRepository.save(image);
                 })
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(ImageNotFoundException::new);
     }
 
     @Override
