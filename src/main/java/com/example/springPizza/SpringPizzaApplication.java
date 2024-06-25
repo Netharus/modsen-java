@@ -5,9 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class SpringPizzaApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(SpringPizzaApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(SpringPizzaApplication.class, args);
+    }
 }

@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: v1-2
+      id: v1-3
       author: Mikhail Kondratsiuk
       changes:
         - createTable:
@@ -32,24 +32,9 @@ databaseChangeLog:
                     foreignKeyName: product_category_fk
                     references: categories(name)
               - column:
-                  name: photo
-                  type: varchar(255)
-      rollback:
-        - dropAllForeignKeyConstraints:
-            baseTableName: products
-        - dropTable:
-            tableName: products
-
-  - changeSet:
-      id: v1-2-1
-      author: Mikhail Kondratsiuk
-      preConditions:
-        - onFail: MARK_RAN
-        - tableExists:
-            tableName: products
-        - tableIsEmpty:
-            tableName: products
-      changes:
-          - loadData:
-              file: db/data/products.csv
-              tableName: products
+                  name: image_id
+                  type: bigint
+                  constraints:
+                    foreignKeyName: product_image_fk
+                    references: images(id)
+                    unique: true

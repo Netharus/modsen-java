@@ -1,17 +1,13 @@
-package com.example.springPizza.database.models;
+package com.example.springPizza.models;
 
-import com.example.springPizza.database.models.enums.Role;
+import com.example.springPizza.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
 @Table(name = "users")
 public class User {

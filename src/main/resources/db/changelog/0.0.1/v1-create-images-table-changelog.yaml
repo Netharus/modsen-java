@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: v1-2
+      author: Mikhail Kondratsiuk
+      changes:
+        - createTable:
+            tableName: images
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: url
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: delete_hash
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
