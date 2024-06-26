@@ -13,33 +13,16 @@ import java.io.IOException;
 @ControllerAdvice
 @Slf4j
 public class ExceptionResolver extends ResponseEntityExceptionHandler {
-    @ExceptionHandler(value = UserNotFoundException.class)
-    ResponseEntity<HttpStatus> userNotFoundException(){
-        log.info("UserNotFound exception!!!");
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
 
-    @ExceptionHandler(value = ImageNotFoundException.class)
-    ResponseEntity<HttpStatus> imageNotFoundException(){
-        log.info("ImageNotFound exception!!!");
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = CategoryNotFoundException.class)
-    ResponseEntity<HttpStatus> categoryNotFoundException(){
-        log.info("CategoryNotFound exception!!!");
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = OrderNotFoundException.class)
-    ResponseEntity<HttpStatus> orderNotFoundException(){
-        log.info("OrderNotFound exception!!!");
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = ProductNotFoundException.class)
-    ResponseEntity<HttpStatus> productNotFoundException(){
-        log.info("ProductNotFound exception!!!");
+    @ExceptionHandler({
+            UserNotFoundException.class,
+            ImageNotFoundException.class,
+            CategoryNotFoundException.class,
+            OrderNotFoundException.class,
+            ProductNotFoundException.class
+    })
+    ResponseEntity<HttpStatus> handleNotFoundExceptions(RuntimeException ex) {
+        log.info("{} exception!!!", ex.getClass().getSimpleName());
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
@@ -55,21 +38,13 @@ public class ExceptionResolver extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(value = IOException.class)
-    ResponseEntity<HttpStatus> IOException(){
-        log.info("IO exception!!!, failed to update profile image");
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(value = ImgurUploadException.class)
-    ResponseEntity<HttpStatus> imgurUploadException(ImgurUploadException ex) {
-        log.error("ImgurUpload exception: {}", ex.getMessage());
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
-    @ExceptionHandler(value = ImgurDeleteException.class)
-    ResponseEntity<HttpStatus> imgurDeleteException(ImgurDeleteException ex) {
-        log.error("ImgurDelete exception: {}", ex.getMessage());
+    @ExceptionHandler({
+            IOException.class,
+            ImgurUploadException.class,
+            ImgurDeleteException.class
+    })
+    ResponseEntity<HttpStatus> handleInternalServerErrorExceptions(RuntimeException ex) {
+        log.error("{} exception: {}", ex.getClass().getSimpleName(), ex.getMessage());
         return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
