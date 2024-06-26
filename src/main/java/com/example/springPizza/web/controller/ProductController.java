@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pizza/main")
+@RequestMapping("/api/pizza/product")
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class ProductController {
@@ -31,13 +31,13 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/{id}")
-    public ProductResponse findProductById(@PathVariable(name = "id") Long id) {
-        return productService.getProductById(id);
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductResponse> findProductById(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(productService.getProductById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/{name}")
-    public ResponseEntity<List<ProductResponse>> findProductByName(@PathVariable(name = "name") String name){
+    @GetMapping("/by_name")
+    public ResponseEntity<List<ProductResponse>> findProductByName(@RequestParam(name = "name") String name){
         List<ProductResponse> productResponseList = productService.getProductByName(name);
         if (productResponseList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -46,8 +46,8 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/{price}")
-    public ResponseEntity<List<ProductResponse>> findProductByPrice(@PathVariable(name = "price") BigDecimal price){
+    @GetMapping("/by_price")
+    public ResponseEntity<List<ProductResponse>> findProductByPrice(@RequestParam(name = "price") BigDecimal price){
         List<ProductResponse> productResponseList = productService.getProductByPriceLessThan(price);
         if (productResponseList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -57,8 +57,8 @@ public class ProductController {
 
     }
 
-    @PostMapping("/{categoryId}")
-    public ResponseEntity<List<ProductResponse>> findProductByCategory(@PathVariable(name = "categoryId") String categoryName){
+    @GetMapping("/by_categoryId")
+    public ResponseEntity<List<ProductResponse>> findProductByCategory(@RequestParam(name = "categoryId") String categoryName){
         List<ProductResponse> productResponseList = productService.getProductsByCategory(categoryName);
         if (productResponseList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -67,22 +67,23 @@ public class ProductController {
         }
     }
 
-    @PostMapping("/search")
+    @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ProductResponse createProduct(@RequestBody ProductRequest request){
-        return productService.createProduct(request);
+    public ResponseEntity<ProductResponse> createProduct(@RequestBody ProductRequest request){
+        return new ResponseEntity<>(productService.createProduct(request), HttpStatus.CREATED);
     }
 
-    @PutMapping("/search/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public ProductResponse updateProduct(@PathVariable(name = "id") Long id ,@RequestBody ProductRequest request) {
-        return productService.updateProduct(id, request);
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable(name = "id") Long id ,@RequestBody ProductRequest request) {
+        return new ResponseEntity<>(productService.updateProduct(id, request), HttpStatus.OK);
     }
 
-    @DeleteMapping("/search/{id}")
+    @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteProduct(@PathVariable(name = "id") Long id){
+    public ResponseEntity<HttpStatus> deleteProduct(@PathVariable(name = "id") Long id){
         productService.deleteProduct(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

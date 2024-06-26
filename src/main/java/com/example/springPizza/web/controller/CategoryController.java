@@ -2,7 +2,6 @@ package com.example.springPizza.web.controller;
 
 import com.example.springPizza.mappers.dtos.CategoryRequest;
 import com.example.springPizza.mappers.dtos.CategoryResponse;
-import com.example.springPizza.models.Category;
 import com.example.springPizza.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,27 +32,28 @@ public class CategoryController {
         return categoryService.getCategoryById(id);
     }
 
-    @GetMapping("/getBy/{name}")
-    public CategoryResponse findCategoryByName(@PathVariable(name = "name") String name) {
-        return categoryService.getCategoryByName(name);
+    @GetMapping("/by_name")
+    public ResponseEntity<CategoryResponse> findCategoryByName(@RequestParam(name = "name") String name) {
+        return new ResponseEntity<>(categoryService.getCategoryByName(name), HttpStatus.OK);
     }
 
     @PostMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CategoryResponse createCategory(@RequestBody CategoryRequest categoryRequest){
-        return categoryService.createCategory(categoryRequest);
+    public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest){
+        return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.CREATED);
     }
 
     @PutMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public CategoryResponse updateCategory(@RequestBody CategoryRequest categoryRequest) {
-        return categoryService.updateCategory(categoryRequest.getName(), categoryRequest);
+    public ResponseEntity<CategoryResponse> updateCategory(@RequestBody CategoryRequest categoryRequest) {
+        return new ResponseEntity<>(categoryService.updateCategory(categoryRequest.getName(), categoryRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public void deleteCategory(@PathVariable(name = "id") Long id){
+    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable(name = "id") Long id){
         categoryService.deleteCategory(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -21,33 +21,34 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public UserResponse findById(@PathVariable(name = "id") Long id) {
-        return userService.getUserById(id);
+    public ResponseEntity<UserResponse> findById(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public UserResponse updateUser(@PathVariable(name = "id") Long id ,@RequestBody UserRequest request) {
-        return userService.updateUser(id, request);
+    public ResponseEntity<UserResponse> updateUser(@PathVariable(name = "id") Long id ,@RequestBody UserRequest request) {
+        return new ResponseEntity<>(userService.updateUser(id, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable(name = "id") Long id){
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable(name = "id") Long id){
         userService.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @PostMapping("/search/{username}")
+    @GetMapping ("/username")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public UserResponse findUSerByUsername (@PathVariable(name = "username") String username) {
-        return userService.getUserByUsername(username);
+    public ResponseEntity<UserResponse> findUSerByUsername (@RequestParam(name = "username") String username) {
+        return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
     }
 
-    @PostMapping("/search/{login}")
+/*    @PostMapping("/login")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public UserResponse findUserByLogin (@PathVariable(name = "login") String login) {
+    public UserResponse findUserByLogin (@RequestParam(name = "login") String login) {
         return userService.getUserByLogin(login);
-    }
+    }*/
 
-    @PostMapping("/search")
+    @GetMapping("")
     @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UserResponse>> findAllUsers () {
         List<UserResponse> userResponseList = userService.getAllUsers();

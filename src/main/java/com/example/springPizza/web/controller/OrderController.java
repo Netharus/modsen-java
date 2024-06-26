@@ -28,42 +28,43 @@ public class OrderController {
     public ResponseEntity<List<Order>> findAllOrders(){
         List<Order> orderResponseList = orderService.getAllOrders();
         if (orderResponseList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(orderResponseList, HttpStatus.OK);
         }
-    }
-
-    @PostMapping("/{id}")
-    public Order findOrderById(@PathVariable(name = "id") Long id) {
-        return orderService.getOrderById(id);
     }
 
     @GetMapping("/{id}")
+    public ResponseEntity<Order> findOrderById(@PathVariable(name = "id") Long id) {
+        return new ResponseEntity<>(orderService.getOrderById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/user/{id}")
     public ResponseEntity<List<Order>> findAllOrdersByUserId(@PathVariable(name = "id") Long id){
         List<Order> orderResponseList = orderService.getALLByUserId(id);
         if (orderResponseList.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
             return new ResponseEntity<>(orderResponseList, HttpStatus.OK);
         }
     }
 
-    @PostMapping()
+    @PostMapping
     @PreAuthorize("isAuthenticated()")
-    public OrderResponse createOrder(@RequestBody OrderRequest request, @AuthenticationPrincipal UserDetails userDetails){
-        return orderService.createOrder(request, userDetails);
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request, @AuthenticationPrincipal UserDetails userDetails){
+        return new ResponseEntity<>(orderService.createOrder(request, userDetails), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public OrderResponse updateOrder(@PathVariable(name = "id") Long id,  @RequestBody OrderRequest request) {
-        return orderService.updateOrder(id, request);
+    public ResponseEntity<OrderResponse> updateOrder(@PathVariable(name = "id") Long id, @RequestBody OrderRequest request) {
+        return new ResponseEntity<>(orderService.updateOrder(id, request), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated()")
-    public void deleteOrder(@PathVariable(name = "id") Long id){
+    public ResponseEntity<HttpStatus> deleteOrder(@PathVariable(name = "id") Long id){
         orderService.deleteOrder(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
