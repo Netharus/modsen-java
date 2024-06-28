@@ -40,16 +40,16 @@ databaseChangeLog:
         - dropTable:
             tableName: products
 
-  - changeSet:
-      id: v1-2-1
-      author: Mikhail Kondratsiuk
-      preConditions:
-        - onFail: MARK_RAN
-        - tableExists:
-            tableName: products
-        - tableIsEmpty:
-            tableName: products
-      changes:
-          - loadData:
-              file: db/data/products.csv
-              tableName: products
+#  - changeSet:
+#      id: v1-2-1
+#      author: Mikhail Kondratsiuk
+#      preConditions:
+#        - onFail: MARK_RAN
+#        - tableExists:
+#            tableName: products
+#        - tableIsEmpty:
+#            tableName: products
+#      changes:
+#          - loadData:
+#              file: db/data/products.csv
+#              tableName: products

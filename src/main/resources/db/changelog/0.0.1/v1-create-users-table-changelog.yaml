@@ -2,57 +2,72 @@ databaseChangeLog:
   - changeSet:
       id: v1-3
       author: Mikhail Kondratsiuk
-      changes:
-        - createTable:
-            tableName: users
-            columns:
-              - column:
-                  name: id
-                  type: bigint
-                  autoIncrement: true
-                  constraints:
-                    primaryKey: true
-              - column:
-                  name: login
-                  type: varchar(30)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: password
-                  type: varchar(50)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: phone_number
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: role
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-                    checkConstraint: "role IN ('ADMIN', 'USER')"
-              - column:
-                  name: username
-                  type: varchar(30)
-                  constraints:
-                    nullable: false
+      createTable:
+        tableName: users
+        columns:
+          - column:
+              name: id
+              type: bigint
+              autoIncrement: true
+              constraints:
+                primaryKey: true
+          - column:
+              name: password
+              type: varchar
+              constraints:
+                nullable: false
+          - column:
+              name: username
+              type: varchar(30)
+              constraints:
+                nullable: false
+                unique: true
+          - column:
+              name: email
+              type: varchar(50)
+              constraints:
+                nullable: false
+                unique: true
+          - column:
+              name: full_name
+              type: varchar(100)
+              constraints:
+                nullable: false
+          - column:
+              name: gender
+              type: varchar(10)
+              constraints:
+                nullable: false
+          - column:
+              name: birth_date
+              type: date
+              constraints:
+                nullable: false
+          - column:
+              name: phone_number
+              type: varchar(255)
+              constraints:
+                nullable: false
+                unique: true
+          - column:
+              name: role
+              type: varchar(255)
+              constraints:
+                nullable: false
+                checkConstraint: "role IN ('ADMIN', 'USER')"
       rollback:
         - dropTable:
             tableName: users
-  - changeSet:
-      id: v1-3-1
-      author: Mikhail Kondratsiuk
-      preConditions:
-        - onFail: MARK_RAN
-        - tableExists:
-            tableName: users
-        - tableIsEmpty:
-            tableName: users
-      changes:
-          - loadData:
-              file: db/data/users.csv
-              tableName: users
+#  - changeSet:
+#      id: v1-3-1
+#      author: Mikhail Kondratsiuk
+#      preConditions:
+#        - onFail: MARK_RAN
+#        - tableExists:
+#            tableName: users
+#        - tableIsEmpty:
+#            tableName: users
+#      changes:
+#          - loadData:
+#              file: db/data/users.csv
+#              tableName: users
