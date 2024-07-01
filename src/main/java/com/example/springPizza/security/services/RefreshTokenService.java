@@ -17,6 +17,8 @@ public class RefreshTokenService {
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
 
+    final int EXP_TIME=600000;
+
     @Autowired
     UserRepository userRepository;
     //TODO Exception написать
@@ -27,7 +29,7 @@ public class RefreshTokenService {
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(user)
                 .token(UUID.randomUUID().toString())
-                .expiryDate(Instant.now().plusMillis(600000)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
+                .expiryDate(Instant.now().plusMillis(EXP_TIME)) // set expiry of refresh token to 10 minutes - you can configure it application.properties file
                 .build();
         return refreshTokenRepository.save(refreshToken);
     }

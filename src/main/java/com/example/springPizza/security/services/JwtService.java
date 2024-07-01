@@ -20,6 +20,7 @@ import java.util.Map;
 public class JwtService {
     @Value("${token.signing.key}")
     private String jwtSigningKey;
+    final int EXP_TIME=144000000;
 
     /**
      * Извлечение имени пользователя из токена
@@ -81,7 +82,7 @@ public class JwtService {
     private String generateToken(Map<String, Object> extraClaims, String username) {
         return Jwts.builder().setClaims(extraClaims).setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 100000 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + EXP_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256).compact();
     }
 
