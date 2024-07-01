@@ -1,8 +1,7 @@
 package com.example.springPizza.security.controller;
 
-import com.example.springPizza.security.JwtAuthenticationResponse;
-import com.example.springPizza.security.dto.JwtResponseDTO;
-import com.example.springPizza.security.dto.RefreshTokenRequestDTO;
+import com.example.springPizza.security.dto.JwtResponseDto;
+import com.example.springPizza.security.dto.RefreshTokenRequestDto;
 import com.example.springPizza.security.dto.SignInRequest;
 import com.example.springPizza.security.dto.SignUpRequest;
 import com.example.springPizza.security.model.RefreshToken;
@@ -39,11 +38,11 @@ public class AuthController {
 
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("/login")
-    public JwtResponseDTO AuthenticateAndGetToken(@RequestBody SignInRequest authRequestDTO){
+    public JwtResponseDto AuthenticateAndGetToken(@RequestBody SignInRequest authRequestDTO){
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
         if(authentication.isAuthenticated()){
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
-            return JwtResponseDTO.builder()
+            return JwtResponseDto.builder()
                     .accessToken(authenticationService.signIn(authRequestDTO))
                     .token(refreshToken.getToken())
                     .build();
@@ -54,9 +53,9 @@ public class AuthController {
     }
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
-    public JwtResponseDTO signUp(@RequestBody @Valid SignUpRequest request) {
+    public JwtResponseDto signUp(@RequestBody @Valid SignUpRequest request) {
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUsername());
-        return JwtResponseDTO.builder()
+        return JwtResponseDto.builder()
                 .accessToken(authenticationService.signUp(request))
                 .token(refreshToken.getToken())
                 .build();
@@ -67,13 +66,13 @@ public class AuthController {
 //        return authenticationService.signIn(request);
 //    }
     @PostMapping("/refreshToken")
-    public JwtResponseDTO refreshToken(@RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
+    public JwtResponseDto refreshToken(@RequestBody RefreshTokenRequestDto refreshTokenRequestDTO){
         return refreshTokenService.findByToken(refreshTokenRequestDTO.getToken())
                 .map(refreshTokenService::verifyExpiration)
                 .map(RefreshToken::getUserInfo)
                 .map(userInfo -> {
                     String accessToken = jwtService.generateToken(userInfo);
-                    return JwtResponseDTO.builder()
+                    return JwtResponseDto.builder()
                             .accessToken(accessToken)
                             .token(refreshTokenRequestDTO.getToken()).build();
                 }).orElseThrow(() ->new RuntimeException("Refresh Token is not in DB..!!"));
