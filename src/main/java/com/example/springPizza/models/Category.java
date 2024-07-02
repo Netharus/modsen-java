@@ -14,6 +14,9 @@ import lombok.Setter;
 @Table(name = "categories")
 public class Category {
     @Id
-    @Column(length = 40, name = "name")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 40, name = "name", unique = true, nullable = false)
     private String name;
 }

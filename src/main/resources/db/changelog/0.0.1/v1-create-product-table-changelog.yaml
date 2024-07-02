@@ -26,15 +26,21 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: category_name
-                  type: varchar(40)
+                  name: category_id
+                  type: bigint
                   constraints:
                     foreignKeyName: product_category_fk
-                    references: categories(name)
+                    references: categories(id)
               - column:
                   name: image_id
                   type: bigint
                   constraints:
                     foreignKeyName: product_image_fk
                     references: images(id)
-                    unique: true
+      rollback:
+        - dropTable:
+            tableName: products
+        - dropAllForeignKeyConstraints:
+            baseTableName: product_category_fk
+        - dropAllForeignKeyConstraints:
+            baseTableName: product_image_fk

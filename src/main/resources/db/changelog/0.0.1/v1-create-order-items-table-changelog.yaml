@@ -13,6 +13,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: order_id_fk
                     references: orders(id)
+                    deleteCascade: true
               - column:
                   name: product_id
                   type: bigint
@@ -20,3 +21,15 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: product_id_fk
                     references: products(id)
+                    deleteCascade: true
+        - addPrimaryKey:
+            tableName: order_items
+            constraintName: order_items_pk
+            columnNames: order_id, product_id
+      rollback:
+        - dropTable:
+            tableName: order_items
+        - dropAllForeignKeyConstraints:
+            baseTableName: order_id_fk
+        - dropAllForeignKeyConstraints:
+            baseTableName: product_id_fk

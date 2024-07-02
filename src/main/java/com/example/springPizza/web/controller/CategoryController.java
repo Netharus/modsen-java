@@ -6,7 +6,6 @@ import com.example.springPizza.services.interfaces.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,7 +13,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/pizza/category")
-@CrossOrigin(origins = "http://localhost:3000")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -29,8 +27,8 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public CategoryResponse findCategoryById(@PathVariable(name = "id") Long id) {
-        return categoryService.getCategoryById(id);
+    public ResponseEntity<CategoryResponse> findCategoryById(@PathVariable Long id) {
+        return new ResponseEntity<>(categoryService.getCategoryById(id), HttpStatus.OK);
     }
 
     @GetMapping("/by_name")
@@ -39,20 +37,20 @@ public class CategoryController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
+//    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<CategoryResponse> createCategory(@RequestBody CategoryRequest categoryRequest){
         return new ResponseEntity<>(categoryService.createCategory(categoryRequest), HttpStatus.CREATED);
     }
 
-    @PutMapping
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<CategoryResponse> updateCategory(@RequestBody CategoryRequest categoryRequest) {
-        return new ResponseEntity<>(categoryService.updateCategory(categoryRequest.getName(), categoryRequest), HttpStatus.OK);
+    @PutMapping("/{id}")
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryRequest categoryRequest) {
+        return new ResponseEntity<>(categoryService.updateCategory(id, categoryRequest), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable(name = "id") Long id){
+//    @PreAuthorize("hasAuthority('ADMIN')")
+    public ResponseEntity<HttpStatus> deleteCategory(@PathVariable Long id){
         categoryService.deleteCategory(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

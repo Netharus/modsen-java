@@ -30,7 +30,7 @@ public class Product {
     @Column(name = "image_id")
     private Long imageId;
 
-    @Column(name = "category_name")
-    private String categoryName;
+    @Column(name = "category_id")
+    private Long categoryId;
 
 }

@@ -11,8 +11,8 @@ public interface ProductService {
     ProductResponse updateProduct(Long id, ProductRequest productRequest);
     void deleteProduct(Long id);
     ProductResponse getProductById(Long id);
-    List<ProductResponse> getProductByName(String name);
-    List<ProductResponse> getProductByPriceLessThan(BigDecimal price); // gets products with price lower than price in args
+    List<ProductResponse> getProductsByName(String name);
+    List<ProductResponse> getProductsByPriceLessThan(BigDecimal price); // gets products with price lower than price in args
     List<ProductResponse> getAllProducts();
-    List<ProductResponse> getProductsByCategory(String categoryName);
+    List<ProductResponse> getProductsByCategory(Long id);
 }

@@ -11,15 +11,8 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
-
-    Product getProductsById(Long id);
-
-    List<Product> findAllByCategoryName(String categoryName);
-
+    List<Product> findAllByCategoryId(Long id);
     List<Product> findAllByName(String name);
     @Query(nativeQuery = true, value = "SELECT * FROM products WHERE price < :price")
     List<Product> findAllByPriceLessThan(@Param("price") BigDecimal price);
-
-
-
 }

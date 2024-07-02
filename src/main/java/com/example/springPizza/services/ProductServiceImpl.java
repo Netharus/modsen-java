@@ -2,11 +2,13 @@ package com.example.springPizza.services;
 
 import com.example.springPizza.exceptions.ProductNotFoundException;
 import com.example.springPizza.mappers.ProductMapper;
+import com.example.springPizza.mappers.dtos.CategoryResponse;
 import com.example.springPizza.mappers.dtos.ProductRequest;
 import com.example.springPizza.mappers.dtos.ProductResponse;
 import com.example.springPizza.models.Image;
 import com.example.springPizza.models.Product;
 import com.example.springPizza.repositories.ProductRepository;
+import com.example.springPizza.services.interfaces.CategoryService;
 import com.example.springPizza.services.interfaces.ImageService;
 import com.example.springPizza.services.interfaces.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +24,10 @@ import java.util.List;
 @Slf4j
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
-    private final ProductMapper productMapper;
     private final ImageService imageService;
+    private final CategoryService categoryService;
+    private final ProductMapper productMapper;
+
 
     @Override
     public ProductResponse createProduct(ProductRequest request) {
@@ -33,7 +37,7 @@ public class ProductServiceImpl implements ProductService {
         product.setImageId(image.getId());
         productRepository.save(product);
 
-        return productMapper.toResponse(product, image);
+        return productMapper.toResponse(product, image, categoryService.getCategoryById(product.getCategoryId()));
     }
 
     @Override
@@ -45,14 +49,14 @@ public class ProductServiceImpl implements ProductService {
         product.setId(id);
         productRepository.saveAndFlush(product);
 
-        return productMapper.toResponse(product, image);
+        return productMapper.toResponse(product, image, categoryService.getCategoryById(product.getCategoryId()));
     }
 
     @Override
     public void deleteProduct(Long id) {
         Product deleteProduct = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
-        imageService.deleteImage(deleteProduct.getImageId());
         productRepository.deleteById(id);
+        imageService.deleteImage(deleteProduct.getImageId());
     }
 
     @Transactional(readOnly = true)
@@ -60,31 +64,38 @@ public class ProductServiceImpl implements ProductService {
     public ProductResponse getProductById(Long id) {
         Product product = productRepository.findById(id).orElseThrow(ProductNotFoundException::new);
         Image image = imageService.getImageById(product.getImageId());
-        return productMapper.toResponse(product, image);
+        return productMapper.toResponse(product, image, categoryService.getCategoryById(product.getCategoryId()));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductResponse> getProductByName(String name) {
-        return productMapper.toResponses(productRepository.findAllByName(name));
+    public List<ProductResponse> getProductsByName(String name) {
+        return getProductResponses(productRepository.findAllByName(name));
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductResponse> getProductByPriceLessThan(BigDecimal price) {
-        return productMapper.toResponses(productRepository.findAllByPriceLessThan(price));
+    public List<ProductResponse> getProductsByPriceLessThan(BigDecimal price) {
+        return getProductResponses(productRepository.findAllByPriceLessThan(price));
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<ProductResponse> getAllProducts() {
-        return productMapper.toResponses(productRepository.findAll());
+        return getProductResponses(productRepository.findAll());
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<ProductResponse> getProductsByCategory(String categoryName) {
-        return productMapper.toResponses(productRepository.findAllByCategoryName(categoryName));
+    public List<ProductResponse> getProductsByCategory(Long id) {
+        return getProductResponses(productRepository.findAllByCategoryId(id));
+    }
+
+    private List<ProductResponse> getProductResponses(List<Product> products) {
+        List<Image> images = products.stream().map(product -> imageService.getImageById(product.getImageId())).toList();
+        List<CategoryResponse> categories = products.stream().map(product -> categoryService.getCategoryById(product.getCategoryId())).toList();
+
+        return productMapper.toResponses(products, images, categories);
     }
 
 }

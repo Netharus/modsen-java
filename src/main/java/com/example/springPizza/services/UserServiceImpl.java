@@ -55,10 +55,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse updateUser(Long id, UserRequest request) {
-        userRepository.findByLogin(request.getLogin()).orElseThrow(UserNotFoundException::new);
-        User user = userMapper.toModel(request);
-        user.setId(id);
-        return userMapper.toResponse(userRepository.saveAndFlush(user));
+        User oldUser = userRepository.findById(id).orElseThrow(UserNotFoundException::new);
+        User newUser = userMapper.toModel(request);
+        newUser.setId(id);
+        newUser.setRole(oldUser.getRole());
+        return userMapper.toResponse(userRepository.saveAndFlush(newUser));
     }
 
     @Override

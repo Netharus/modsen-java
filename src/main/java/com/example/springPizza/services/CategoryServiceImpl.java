@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 @Slf4j
 public class CategoryServiceImpl implements CategoryService {
-
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
 
@@ -30,11 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryResponse updateCategory(String name, CategoryRequest categoryRequest)  {
-        categoryRepository.findByName(name).orElseThrow(CategoryNotFoundException::new);
-        Category category = categoryMapper.toModel(categoryRequest);
-        categoryRepository.saveAndFlush(category);
-        return categoryMapper.toResponse(category);
+    public CategoryResponse updateCategory(Long id, CategoryRequest categoryRequest)  {
+        Category oldCategory = categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new);
+        oldCategory.setName(categoryMapper.toModel(categoryRequest).getName());
+        categoryRepository.saveAndFlush(oldCategory);
+        return categoryMapper.toResponse(oldCategory);
     }
 
     @Override
@@ -44,10 +43,8 @@ public class CategoryServiceImpl implements CategoryService {
         } else {
             log.info("Tried delete not existing category");
         }
-
     }
 
-    @Transactional(readOnly = true)
     @Override
     public CategoryResponse getCategoryById(Long id) {
         return categoryMapper.toResponse(categoryRepository.findById(id).orElseThrow(CategoryNotFoundException::new));
