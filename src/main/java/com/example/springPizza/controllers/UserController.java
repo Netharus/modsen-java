@@ -1,4 +1,4 @@
-package com.example.springPizza.web.controller;
+package com.example.springPizza.controllers;
 
 import com.example.springPizza.mappers.dtos.UserRequest;
 import com.example.springPizza.mappers.dtos.UserResponse;
@@ -12,6 +12,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 @RequestMapping("/api/pizza/user")
 public class UserController {
     private final UserService userService;

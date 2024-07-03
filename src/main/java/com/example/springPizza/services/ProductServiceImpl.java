@@ -47,6 +47,7 @@ public class ProductServiceImpl implements ProductService {
 
         Product product = productMapper.toModel(productRequest);
         product.setId(id);
+        product.setImageId(image.getId());
         productRepository.saveAndFlush(product);
 
         return productMapper.toResponse(product, image, categoryService.getCategoryById(product.getCategoryId()));

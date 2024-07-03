@@ -25,12 +25,9 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Image updateImage(Long id, MultipartFile newMultipartFile) {
-        return imageRepository.findById(id)
-                .map(oldImage -> {
-                    Image image = imgurUtil.updateImage(newMultipartFile, oldImage);
-                    return imageRepository.save(image);
-                })
-                .orElseThrow(ImageNotFoundException::new);
+        Image image = imageRepository.findById(id).orElseThrow(ImageNotFoundException::new);
+        image = imgurUtil.updateImage(newMultipartFile, image);
+        return imageRepository.save(image);
     }
 
     @Override

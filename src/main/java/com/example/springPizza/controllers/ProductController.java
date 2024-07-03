@@ -1,4 +1,4 @@
-package com.example.springPizza.web.controller;
+package com.example.springPizza.controllers;
 
 import com.example.springPizza.mappers.dtos.ProductRequest;
 import com.example.springPizza.mappers.dtos.ProductResponse;
@@ -7,13 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/pizza/product")
+@CrossOrigin(origins = "http://localhost:3000")
 @RequiredArgsConstructor
+@RequestMapping("/api/pizza/product")
 public class ProductController {
     private final ProductService productService;
 
@@ -65,30 +67,36 @@ public class ProductController {
 
     @PostMapping
 //    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ProductResponse> createProduct(@ModelAttribute ProductRequest request){
+    public ResponseEntity<ProductResponse> createProduct(@RequestParam("name") String name,
+                                                         @RequestParam("price") BigDecimal price,
+                                                         @RequestParam("description") String description,
+                                                         @RequestParam("categoryId") Long categoryId,
+                                                         @RequestParam("image") MultipartFile image){
+        ProductRequest request = ProductRequest.builder()
+                .name(name)
+                .price(price)
+                .description(description)
+                .categoryId(categoryId)
+                .image(image)
+                .build();
         return new ResponseEntity<>(productService.createProduct(request), HttpStatus.CREATED);
     }
 
-//    @PostMapping
-////    @PreAuthorize("hasAuthority('ADMIN')")
-//    public ResponseEntity<ProductResponse> createProduct(@RequestParam("name") String name,
-//                                                         @RequestParam("price") BigDecimal price,
-//                                                         @RequestParam("description") String description,
-//                                                         @RequestParam("categoryId") Long categoryId,
-//                                                         @RequestParam("image") MultipartFile image){
-//        ProductRequest request = ProductRequest.builder()
-//                .name(name)
-//                .price(price)
-//                .description(description)
-//                .categoryId(categoryId)
-//                .image(image)
-//                .build();
-//        return new ResponseEntity<>(productService.createProduct(request), HttpStatus.CREATED);
-//    }
-
     @PutMapping("/{id}")
 //    @PreAuthorize("hasAuthority('ADMIN')")
-    public ResponseEntity<ProductResponse> updateProduct(@PathVariable(name = "id") Long id ,@RequestBody ProductRequest request) {
+    public ResponseEntity<ProductResponse> updateProduct(@PathVariable(name = "id") Long id,
+                                                         @RequestParam("name") String name,
+                                                         @RequestParam("price") BigDecimal price,
+                                                         @RequestParam("description") String description,
+                                                         @RequestParam("categoryId") Long categoryId,
+                                                         @RequestParam("image") MultipartFile image) {
+        ProductRequest request = ProductRequest.builder()
+                .name(name)
+                .price(price)
+                .description(description)
+                .categoryId(categoryId)
+                .image(image)
+                .build();
         return new ResponseEntity<>(productService.updateProduct(id, request), HttpStatus.OK);
     }
 
