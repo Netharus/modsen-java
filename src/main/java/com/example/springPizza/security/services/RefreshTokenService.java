@@ -5,6 +5,7 @@ import com.example.springPizza.repositories.UserRepository;
 import com.example.springPizza.security.model.RefreshToken;
 import com.example.springPizza.security.repo.RefreshTokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -23,9 +24,11 @@ public class RefreshTokenService {
     UserRepository userRepository;
     //TODO Exception написать
     public RefreshToken createRefreshToken(String username){
-        User user=userRepository.findByUsername(username);
-//        if (user.isEmpty())
-//            throw new UserNot
+        User user=userRepository.findByUsernameOrEmail(username,username).orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден"));
+        Optional<RefreshToken> token = refreshTokenRepository.findByUserInfo(user);
+        if(!token.isEmpty()){
+            refreshTokenRepository.delete(token.get());
+        }
         RefreshToken refreshToken = RefreshToken.builder()
                 .userInfo(user)
                 .token(UUID.randomUUID().toString())

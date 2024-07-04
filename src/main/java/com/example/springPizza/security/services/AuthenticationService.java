@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -65,15 +66,17 @@ public class AuthenticationService {
             ));
         }
 
-        var user = userService
-                .userDetailsService()
-                .loadUserByUsername(request.getUsername());
-
-        if (user == null) {
+        UserDetails user;
+        if (request.getUsername() == null) {
             user = userService
                     .userDetailsService()
                     .loadUserByUsername(request.getEmail());
+        }else {
+            user = userService
+                    .userDetailsService()
+                    .loadUserByUsername(request.getUsername());
         }
+
         var jwt = jwtService.generateToken(user);
 
         return jwt;

@@ -39,9 +39,20 @@ public class AuthController {
     @Operation(summary = "Авторизация пользователя")
     @PostMapping("/login")
     public JwtResponseDto AuthenticateAndGetToken(@RequestBody SignInRequest authRequestDTO){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
+        Authentication authentication;
+        if(authRequestDTO.getUsername()==null){
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getEmail(), authRequestDTO.getPassword()));
+
+        }else{
+            authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequestDTO.getUsername(), authRequestDTO.getPassword()));
+        }
         if(authentication.isAuthenticated()){
-            RefreshToken refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
+            RefreshToken refreshToken;
+            if(authRequestDTO.getUsername()==null) {
+                refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getEmail());
+            }else{
+                refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
+            }
             return JwtResponseDto.builder()
                     .accessToken(authenticationService.signIn(authRequestDTO))
                     .token(refreshToken.getToken())
