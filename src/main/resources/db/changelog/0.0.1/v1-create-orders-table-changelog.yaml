@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: v1-4
+      id: v1-5
       author: Mikhail Kondratsiuk
       changes:
         - createTable:
@@ -19,6 +19,7 @@ databaseChangeLog:
                     nullable: false
                     foreignKeyName: user_id_fk
                     references: users(id)
+                    deleteCascade: true
       rollback:
         - dropTable:
             tableName: orders

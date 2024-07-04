@@ -1,18 +1,17 @@
-package com.example.springPizza.database.models;
+package com.example.springPizza.models;
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 @Entity
+@Builder
 @Table(name = "products")
 public class Product {
     @Id
@@ -28,10 +27,10 @@ public class Product {
     @Column(length = 200, name = "description")
     private String description;
 
-    @Column(name = "photo")
-    private String photo;
+    @Column(name = "image_id")
+    private Long imageId;
 
-    @Column(name = "category_name")
-    private String categoryName;
+    @Column(name = "category_id")
+    private Long categoryId;
 
 }

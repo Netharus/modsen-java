@@ -6,9 +6,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 
 @SpringBootApplication
 public class SpringPizzaApplication {
-
-	public static void main(String[] args) {
-		SpringApplication.run(SpringPizzaApplication.class, args);
-	}
-
+    public static void main(String[] args) {
+        SpringApplication.run(SpringPizzaApplication.class, args);
+    }
 }
