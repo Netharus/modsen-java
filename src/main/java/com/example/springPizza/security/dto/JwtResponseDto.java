@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 @Builder
 public class JwtResponseDto {
 
+    private String email;
+    private String username;
     private String accessToken;
     private String token;
 }

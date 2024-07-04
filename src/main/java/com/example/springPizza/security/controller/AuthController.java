@@ -17,13 +17,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/pizza/auth")
 @RequiredArgsConstructor
 @Tag(name = "Аутентификация")
 public class AuthController {
@@ -54,6 +51,8 @@ public class AuthController {
                 refreshToken = refreshTokenService.createRefreshToken(authRequestDTO.getUsername());
             }
             return JwtResponseDto.builder()
+                    .username(authRequestDTO.getUsername())
+                    .email(authRequestDTO.getEmail())
                     .accessToken(authenticationService.signIn(authRequestDTO))
                     .token(refreshToken.getToken())
                     .build();
@@ -65,10 +64,9 @@ public class AuthController {
     @Operation(summary = "Регистрация пользователя")
     @PostMapping("/sign-up")
     public JwtResponseDto signUp(@RequestBody @Valid SignUpRequest request) {
-        RefreshToken refreshToken = refreshTokenService.createRefreshToken(request.getUsername());
         return JwtResponseDto.builder()
                 .accessToken(authenticationService.signUp(request))
-                .token(refreshToken.getToken())
+                .token(refreshTokenService.createRefreshToken(request.getUsername()).getToken())
                 .build();
     }
 //    @Operation(summary = "Авторизация пользователя")
