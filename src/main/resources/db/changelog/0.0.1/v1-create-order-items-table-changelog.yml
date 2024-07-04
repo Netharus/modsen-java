@@ -25,16 +25,16 @@ databaseChangeLog:
             tableName: order_items
         - dropAllForeignKeyConstraints:
             baseTableName: order_items
-  - changeSet:
-      id: v1-5-1
-      author: Mikhail Kondratsiuk
-      preConditions:
-        - onFail: MARK_RAN
-        - tableExists:
-            tableName: order_items
-        - tableIsEmpty:
-            tableName: order_items
-      changes:
-          - loadData:
-              file: db/data/order_items.csv
-              tableName: order_items
+#  - changeSet:
+#      id: v1-5-1
+#      author: Mikhail Kondratsiuk
+#      preConditions:
+#        - onFail: MARK_RAN
+#        - tableExists:
+#            tableName: order_items
+#        - tableIsEmpty:
+#            tableName: order_items
+#      changes:
+#          - loadData:
+#              file: db/data/order_items.csv
+#              tableName: order_items

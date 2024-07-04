@@ -15,16 +15,16 @@ databaseChangeLog:
         - dropTable:
             tableName: categories
 
-  - changeSet:
-      id: v1-1-1
-      author: Mikhail Kondratsiuk
-      preConditions:
-        - onFail: MARK_RAN
-        - tableExists:
-            tableName: categories
-        - tableIsEmpty:
-            tableName: categories
-      changes:
-        - loadData:
-            file: db/data/categories.csv
-            tableName: categories
+#  - changeSet:
+#      id: v1-1-1
+#      author: Mikhail Kondratsiuk
+#      preConditions:
+#        - onFail: MARK_RAN
+#        - tableExists:
+#            tableName: categories
+#        - tableIsEmpty:
+#            tableName: categories
+#      changes:
+#        - loadData:
+#            file: db/data/categories.csv
+#            tableName: categories
