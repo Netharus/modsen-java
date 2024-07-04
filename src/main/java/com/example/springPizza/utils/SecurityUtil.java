@@ -9,6 +9,6 @@ import org.springframework.stereotype.Component;
 public class SecurityUtil {
     private final OrderService orderService;
     public boolean hasAccessToOrder(Long orderId, String userLogin) {
-        return orderService.getOrderById(orderId).getLogin().equals(userLogin);
+        return orderService.getOrderById(orderId).getUsername().equals(userLogin);
     }
 }

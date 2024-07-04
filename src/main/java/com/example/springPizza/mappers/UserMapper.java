@@ -1,6 +1,5 @@
 package com.example.springPizza.mappers;
 
-import com.example.springPizza.models.User;
 import com.example.springPizza.mappers.dtos.UserLoginRequest;
 import com.example.springPizza.mappers.dtos.UserRequest;
 import com.example.springPizza.mappers.dtos.UserResponse;
@@ -9,6 +8,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.MappingTarget;
+import com.example.springPizza.models.User;
 
 import java.util.List;
 
@@ -20,8 +20,11 @@ public interface UserMapper {
     @Mapping(target = "role", ignore = true)
     User toModel(UserRequest userRequest);
 
+    @Mapping(target = "gender", ignore = true)
+    @Mapping(target = "fullName", ignore = true)
+    @Mapping(target = "email", ignore = true)
+    @Mapping(target = "birthDate", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "username", ignore = true)
     @Mapping(target = "phoneNumber", ignore = true)
     @Mapping(target = "role", ignore = true)
     User toModel(UserLoginRequest userLoginRequest);

@@ -30,12 +30,6 @@ public class UserServiceImpl implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public UserResponse getUserByLogin(String login) {
-        return userMapper.toResponse(userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new));
-    }
-
-    @Transactional(readOnly = true)
-    @Override
     public List<UserResponse> getAllUsers() {
         return userMapper.toResponses(userRepository.findAll());
     }

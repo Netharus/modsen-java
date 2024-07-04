@@ -1,6 +1,6 @@
 package com.example.springPizza.security.repo;
 
-import com.example.springPizza.database.models.User;
+import com.example.springPizza.models.User;
 import com.example.springPizza.security.model.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

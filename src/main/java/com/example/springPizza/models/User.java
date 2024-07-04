@@ -1,6 +1,6 @@
-package com.example.springPizza.database.models;
+package com.example.springPizza.models;
 
-import com.example.springPizza.database.models.enums.Role;
+import com.example.springPizza.models.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,7 +8,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 

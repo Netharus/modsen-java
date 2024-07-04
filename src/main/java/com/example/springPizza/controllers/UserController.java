@@ -42,12 +42,6 @@ public class UserController {
         return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
     }
 
-    @GetMapping("/userlogin")
-//    @PreAuthorize("hasAuthority('ADMIN')")
-    public UserResponse findUserByLogin(@RequestParam(name = "login") String login) {
-        return userService.getUserByLogin(login);
-    }
-
     @GetMapping
 //    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<List<UserResponse>> findAllUsers () {

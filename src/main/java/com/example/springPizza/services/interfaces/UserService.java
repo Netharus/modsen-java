@@ -9,7 +9,6 @@ public interface UserService {
     List<UserResponse> getAllUsers();
     UserResponse getUserById(Long id);
     UserResponse getUserByUsername(String username);
-    UserResponse getUserByLogin(String login);
     UserResponse createUser(UserRequest request);
     UserResponse updateUser(Long id, UserRequest request);
     void deleteUser(Long id);

@@ -1,8 +1,7 @@
 package com.example.springPizza.security.services;
 
-import com.example.springPizza.database.models.User;
-import com.example.springPizza.database.models.enums.Role;
-import com.example.springPizza.security.JwtAuthenticationResponse;
+import com.example.springPizza.models.User;
+import com.example.springPizza.models.enums.Role;
 import com.example.springPizza.security.dto.SignInRequest;
 import com.example.springPizza.security.dto.SignUpRequest;
 import lombok.RequiredArgsConstructor;

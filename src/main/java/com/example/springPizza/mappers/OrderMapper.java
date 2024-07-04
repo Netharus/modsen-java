@@ -20,7 +20,7 @@ public interface OrderMapper {
     @Mapping(target = "userId", ignore = true)
     Order toModel(OrderRequest orderRequest);
     @Mapping(target = "id", source = "order.id")
-    @Mapping(target = "login", source = "user.login")
+    @Mapping(target = "username", source = "user.username")
     @Mapping(target = "products", source = "products")
     OrderResponse toResponse(Order order, UserResponse user, List<ProductResponse> products);
 

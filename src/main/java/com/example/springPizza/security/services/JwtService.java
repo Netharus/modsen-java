@@ -1,6 +1,6 @@
 package com.example.springPizza.security.services;
 
-import com.example.springPizza.database.models.User;
+import com.example.springPizza.models.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

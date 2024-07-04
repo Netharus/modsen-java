@@ -1,7 +1,6 @@
 package com.example.springPizza.security.services;
 
-import com.example.springPizza.database.models.User;
-import com.example.springPizza.database.models.enums.Role;
+import com.example.springPizza.models.User;
 import com.example.springPizza.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;

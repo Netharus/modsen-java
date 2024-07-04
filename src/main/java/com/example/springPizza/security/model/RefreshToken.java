@@ -1,6 +1,6 @@
 package com.example.springPizza.security.model;
 
-import com.example.springPizza.database.models.User;
+import com.example.springPizza.models.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
